@@ -18,9 +18,10 @@
   .total-price { font-size: 14px; color: #4ade80; font-weight: bold; }
   
   /* Desain Info Pelanggan */
-  .customer-info { background: #0f172a; padding: 10px 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #334155; }
-  .customer-info p { margin: 0 0 4px 0; font-size: 14px; color: #cbd5e1; }
+  .customer-info { background: #0f172a; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #334155; }
+  .customer-info p { margin: 0 0 5px 0; font-size: 14px; color: #cbd5e1; display: flex; align-items: center; gap: 8px;}
   .customer-info strong { color: #fff; font-size: 15px;}
+  .table-badge { background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 12px;}
   
   .item-list { list-style: none; padding: 0; margin: 0 0 15px 0; }
   .item-list li { font-size: 18px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; }
@@ -32,7 +33,7 @@
   
   .summary-card { background: #1e293b; border-radius: 14px; padding: 24px; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.4); overflow-x: auto;}
   .summary-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 2px solid #334155; padding-bottom: 12px; flex-wrap: wrap; gap: 10px;}
-  .summary-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; min-width: 700px;}
+  .summary-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; min-width: 800px;}
   .summary-table th, .summary-table td { text-align: left; padding: 12px; border-bottom: 1px solid #334155; font-size: 14px;}
   .summary-table th { color: #f97316; font-weight: 600; }
   .export-btn { background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; }
@@ -66,14 +67,16 @@
         <tr>
           <th style="width: 50px;">No.</th>
           <th style="width: 100px;">Waktu</th>
-          <th style="width: 150px;">Pelanggan</th>
+          <th style="width: 120px;">Pemesan</th>
+          <th style="width: 100px;">Meja</th>
+          <th style="width: 120px;">WhatsApp</th>
           <th>Rincian Pesanan</th>
           <th style="width: 120px;">Total</th>
         </tr>
       </thead>
       <tbody id="summaryBody">
         <tr>
-          <td colspan="5" class="empty-state">Belum ada pesanan yang diselesaikan.</td>
+          <td colspan="7" class="empty-state">Belum ada pesanan yang diselesaikan.</td>
         </tr>
       </tbody>
     </table>
@@ -106,6 +109,7 @@
   let completedOrdersList = []; 
   let currentGrandTotal = 0;
 
+  // 1. DENGARKAN ORDER MASUK (AKTIF)
   db.ref("orders").on("value", (snapshot) => {
     orderGrid.innerHTML = "";
     if (!snapshot.exists()) {
@@ -117,7 +121,9 @@
       const key = childSnapshot.key;
       const order = childSnapshot.val();
       
+      // BACA 3 DATA PELANGGAN
       const cName = order.customerName || "Tanpa Nama";
+      const cTable = order.customerTable || "-";
       const cWA = order.customerWA || "-";
 
       let itemsHTML = "";
@@ -147,7 +153,7 @@
             <span class="total-price">${totalPrice}</span>
           </div>
           <div class="customer-info">
-            <p>👤 <strong>${cName}</strong></p>
+            <p>👤 <strong>${cName}</strong> <span class="table-badge">📍 ${cTable}</span></p>
             <p>📞 ${cWA}</p>
           </div>
           <ul class="item-list">${itemsHTML}</ul>
@@ -171,6 +177,7 @@
     }
   };
 
+  // 2. DENGARKAN REKAP HARIAN (DATABASE LENGKAP)
   db.ref("completed_orders/" + todayStr).on("value", (snapshot) => {
     summaryBody.innerHTML = "";
     completedOrdersList = [];
@@ -178,7 +185,7 @@
     let orderNumber = 1;
 
     if (!snapshot.exists()) {
-      summaryBody.innerHTML = '<tr><td colspan="5" class="empty-state">Belum ada pesanan selesai hari ini.</td></tr>';
+      summaryBody.innerHTML = '<tr><td colspan="7" class="empty-state">Belum ada pesanan selesai hari ini.</td></tr>';
       grandTotalText.innerText = "Total Omset: Rp 0";
       return;
     }
@@ -186,6 +193,7 @@
     snapshot.forEach((childSnapshot) => {
       const order = childSnapshot.val();
       const cName = order.customerName || "Tanpa Nama";
+      const cTable = order.customerTable || "-";
       const cWA = order.customerWA || "-";
       
       let detailItems = [];
@@ -205,14 +213,16 @@
       currentGrandTotal += totalHarga;
 
       completedOrdersList.push({
-        no: orderNumber, waktu: timeString, nama: cName, wa: cWA, rincian: detailString, total: totalHarga
+        no: orderNumber, waktu: timeString, nama: cName, meja: cTable, wa: cWA, rincian: detailString, total: totalHarga
       });
 
       summaryBody.innerHTML += `
         <tr>
           <td><strong>#${orderNumber}</strong></td>
           <td>${timeString}</td>
-          <td><strong>${cName}</strong><br><span style="font-size:12px;color:#94a3b8;">${cWA}</span></td>
+          <td><strong>${cName}</strong></td>
+          <td>📍 ${cTable}</td>
+          <td>📞 ${cWA}</td>
           <td>${detailString}</td>
           <td style="color: #4ade80; font-weight: bold;">Rp ${totalHarga.toLocaleString("id-ID")}</td>
         </tr>
@@ -223,20 +233,21 @@
     grandTotalText.innerText = `Total Omset: Rp ${currentGrandTotal.toLocaleString("id-ID")}`;
   });
 
+  // 3. FUNGSI EXPORT (DENGAN DATA WA & MEJA)
   window.exportToExcel = function() {
     if (completedOrdersList.length === 0) { alert("Tidak ada data untuk di-export!"); return; }
 
     let csvContent = "data:text/csv;charset=utf-8,";
     csvContent += "DATABASE PELANGGAN & PESANAN WARKOP BRMANO\n";
     csvContent += `Tanggal: ${todayStr}\n\n`;
-    csvContent += "No. Order,Waktu,Nama Pelanggan,No. WhatsApp,Rincian Pesanan,Total Harga\n";
+    csvContent += "No. Order,Waktu,Nama Pemesan,Nomor Meja,No. WhatsApp,Rincian Pesanan,Total Harga\n";
 
     completedOrdersList.forEach(order => {
       let amanRincian = `"${order.rincian}"`; 
-      csvContent += `${order.no},${order.waktu},"${order.nama}","${order.wa}",${amanRincian},${order.total}\n`;
+      csvContent += `${order.no},${order.waktu},"${order.nama}","${order.meja}","${order.wa}",${amanRincian},${order.total}\n`;
     });
     
-    csvContent += `\n,,,,,TOTAL OMSET HARIAN,${currentGrandTotal}\n`;
+    csvContent += `\n,,,,,,TOTAL OMSET HARIAN,${currentGrandTotal}\n`;
 
     const encodedUri = encodeURI(csvContent);
     const downloadAnchor = document.createElement("a");
