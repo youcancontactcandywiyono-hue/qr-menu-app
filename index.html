@@ -5,353 +5,104 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Warkop Brmano</title>
 <style>
+  /* ORANGE AND WHITE THEME */
   :root {
-    --bg: #fdf8f3;
-    --card: #ffffff;
+    --bg: #ffffff;
+    --card: #fff7ed;
     --text: #2a2a2a;
     --muted: #7a7a7a;
-    --accent: #e85d3a;
-    --accent-dark: #c84a2b;
-    --accent-soft: #fde7df;
+    --accent: #f97316;
+    --accent-dark: #ea580c;
+    --accent-soft: #ffedd5;
     --success: #2fa86b;
-    --border: #efe7df;
-    --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    --border: #fed7aa;
+    --shadow: 0 4px 15px rgba(249, 115, 22, 0.1);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 100px;}
+  
+  /* Header & Logo */
+  header { padding: 20px; text-align: center; border-bottom: 1px solid var(--border); }
+  .logo-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid var(--accent); }
+  header h1 { font-size: 24px; color: var(--accent-dark); }
+  header p { font-size: 14px; color: var(--muted); }
 
-  html, body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .app {
-    max-width: 480px;
-    margin: 0 auto;
-    min-height: 100vh;
-    padding-bottom: 140px;
-    position: relative;
-  }
-
-  header {
-    padding: 28px 20px 16px;
-    text-align: left;
-  }
-  header .brand {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-  header h1 {
-    font-size: 28px;
-    font-weight: 700;
-    margin-top: 4px;
-    letter-spacing: -0.5px;
-  }
-  header p {
-    color: var(--muted);
-    font-size: 14px;
-    margin-top: 4px;
-  }
-
-  .menu {
-    padding: 8px 16px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .item {
-    background: var(--card);
-    border-radius: 18px;
-    padding: 16px;
-    display: flex;
-    gap: 14px;
-    align-items: center;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    transition: transform 0.15s ease;
-  }
-  .item:active { transform: scale(0.99); }
-
-  .item-img {
-    width: 72px;
-    height: 72px;
-    border-radius: 14px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    background: var(--accent-soft);
-  }
-
-  .item-info { flex: 1; min-width: 0; }
+  /* Menu Items */
+  .menu { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .item { background: var(--card); border-radius: 12px; padding: 16px; display: flex; align-items: center; border: 1px solid var(--border); }
+  .item-info { flex: 1; }
   .item-name { font-weight: 600; font-size: 16px; }
-  .item-desc {
-    font-size: 13px;
-    color: var(--muted);
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .item-price { font-weight: 700; margin-top: 6px; color: var(--accent); }
+  .item-price { font-weight: 700; color: var(--accent); margin-top: 4px; }
+  
+  /* Buttons */
+  .qty-controls { display: flex; align-items: center; gap: 12px; }
+  .qty-btn { width: 32px; height: 32px; border-radius: 8px; border: none; background: var(--accent-soft); color: var(--accent); font-size: 18px; font-weight: bold; cursor: pointer; }
+  .qty-btn.add { background: var(--accent); color: white; }
+  .qty-num { font-weight: bold; min-width: 20px; text-align: center; }
 
-  .qty-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .qty-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: none;
-    background: var(--accent-soft);
-    color: var(--accent);
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.15s ease;
-  }
-  .qty-btn:active { background: #fbd1c2; }
-  .qty-btn.add {
-    background: var(--accent);
-    color: #fff;
-  }
-  .qty-btn.add:active { background: var(--accent-dark); }
-  .qty-num {
-    min-width: 18px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 15px;
-  }
-
-  .cart-bar {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 480px;
-    padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
-    background: linear-gradient(to top, var(--bg) 60%, rgba(253, 248, 243, 0));
-    pointer-events: none;
-  }
-  .order-btn {
-    pointer-events: auto;
-    width: 100%;
-    padding: 16px;
-    background: var(--accent);
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    border-radius: 16px;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(232, 93, 58, 0.35);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.15s ease, opacity 0.15s ease;
-  }
-  .order-btn:disabled {
-    background: #d4ccc4;
-    box-shadow: none;
-    cursor: not-allowed;
-  }
-  .order-btn:not(:disabled):active { background: var(--accent-dark); }
-
-  .order-btn .count {
-    background: rgba(255,255,255,0.25);
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 700;
-  }
-  .order-btn .price { font-weight: 700; }
-
-  /* Success screen */
-  .success-screen {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 100;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    text-align: center;
-    animation: fadeIn 0.4s ease;
-  }
+  /* Bottom Cart Bar */
+  .cart-bar { position: fixed; bottom: 0; width: 100%; padding: 16px; background: white; border-top: 1px solid var(--border); display: flex; justify-content: center; }
+  .checkout-btn { width: 100%; max-width: 400px; padding: 16px; background: var(--accent); color: white; font-weight: bold; border-radius: 12px; border: none; font-size: 16px; cursor: pointer; display: flex; justify-content: space-between; }
+  
+  /* Order Overview Modal (Cart) */
+  .modal { display: none; position: fixed; inset: 0; background: white; z-index: 50; flex-direction: column; }
+  .modal.show { display: flex; }
+  .modal-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .close-btn { background: none; border: none; font-size: 24px; color: var(--accent); cursor: pointer; font-weight: bold;}
+  .modal-content { padding: 20px; overflow-y: auto; flex: 1; }
+  .confirm-btn { background: var(--success); color: white; width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; margin-top: 20px; cursor: pointer;}
+  
+  /* Success Screen */
+  .success-screen { display: none; position: fixed; inset: 0; background: white; z-index: 100; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;}
   .success-screen.show { display: flex; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .check-circle {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background: var(--success);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    animation: pop 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-  }
-  @keyframes pop {
-    0% { transform: scale(0); }
-    100% { transform: scale(1); }
-  }
-  .check-circle svg { width: 36px; height: 36px; }
-
-  .success-screen h2 {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-  }
-  .success-screen p {
-    color: var(--muted);
-    margin-top: 8px;
-    max-width: 320px;
-    font-size: 15px;
-  }
-  .qr-card {
-    background: var(--card);
-    border-radius: 20px;
-    padding: 22px;
-    margin-top: 28px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-  }
-  .qr-card img {
-    width: 200px;
-    height: 200px;
-    display: block;
-    border-radius: 10px;
-  }
-  .qr-card .total {
-    margin-top: 14px;
-    font-weight: 700;
-    font-size: 18px;
-    color: var(--accent);
-  }
-  .qr-card .label {
-    font-size: 12px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-top: 2px;
-  }
-  .new-order-btn {
-    margin-top: 28px;
-    padding: 14px 28px;
-    background: transparent;
-    color: var(--accent);
-    border: 2px solid var(--accent);
-    border-radius: 14px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s ease;
-  }
-  .new-order-btn:active { background: var(--accent-soft); }
-
-  /* Toast */
-  .toast {
-    position: fixed;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-100px);
-    background: #333;
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: 12px;
-    font-size: 14px;
-    opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 200;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-  }
-  .toast.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-  .toast.error { background: #c84a2b; }
-
-  /* Spinner */
-  .spinner {
-    width: 18px;
-    height: 18px;
-    border: 2.5px solid rgba(255,255,255,0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .qr-img { width: 200px; height: 200px; margin: 20px 0; border-radius: 12px; border: 2px solid var(--accent); }
+  .new-order-btn { margin-top: 20px; padding: 12px 24px; border: 2px solid var(--accent); background: white; color: var(--accent); border-radius: 12px; font-weight: bold; }
 </style>
 </head>
 <body>
 
-<div class="app">
-  <header>
-    <div class="brand">Warkop Brmano</div>
-    <h1>Pesan sekarang</h1>
-    <p>Fresh dishes, ready in minutes.</p>
-  </header>
+<header>
+  <img src="logo.jpg" alt="Warkop Brmano Logo" class="logo-img" onerror="this.style.display='none'">
+  <h1>Warkop Brmano</h1>
+  <p>Pilih menu favoritmu</p>
+</header>
 
-  <div class="menu" id="menu"></div>
-</div>
+<div class="menu" id="menu"></div>
 
-<div class="cart-bar">
-  <button class="order-btn" id="orderBtn" disabled>
-    <span class="count" id="cartCount">0 items</span>
-    <span>Order</span>
-    <span class="price" id="cartTotal">$0.00</span>
+<div class="cart-bar" id="cartBar" style="display: none;">
+  <button class="checkout-btn" id="viewCartBtn">
+    <span id="cartCount">0 item</span>
+    <span>Review Order</span>
+    <span id="cartTotal">Rp0</span>
   </button>
 </div>
 
-<div class="success-screen" id="successScreen">
-  <div class="check-circle">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5 13l4 4L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+<div class="modal" id="cartModal">
+  <div class="modal-header">
+    <h2>Order Overview</h2>
+    <button class="close-btn" id="closeCartBtn">X</button>
   </div>
-  <h2>Order placed!</h2>
-  <p>Scan the QR code below to complete your payment.</p>
-  <div class="qr-card">
-    <img id="qrImg" alt="Payment QR code" />
-    <div class="total" id="successTotal">$0.00</div>
-    <div class="label">Total to pay</div>
+  <div class="modal-content">
+    <div id="cartItems"></div>
+    <button class="confirm-btn" id="confirmOrderBtn">Send Order to Kitchen</button>
   </div>
-  <button class="new-order-btn" id="newOrderBtn">Start a new order</button>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="success-screen" id="successScreen">
+  <h2 style="color: var(--success);">Pesanan Berhasil!</h2>
+  <p>Silahkan scan QR di bawah ini untuk membayar.</p>
+  <img id="qrImg" class="qr-img" alt="QR Code" />
+  <h3 id="successTotal">Rp0</h3>
+  <button class="new-order-btn" id="newOrderBtn">Buat Pesanan Baru</button>
+</div>
 
-<!-- Firebase compat SDK (works with plain <script> tags, no bundler) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
-  // ===== Firebase config =====
-  // Replace these placeholder values with your own project's config
-  // from the Firebase Console (Project Settings -> Web app).
-const firebaseConfig = {
+  // Firebase Config (Pre-filled for you)
+  const firebaseConfig = {
     apiKey: "AIzaSyCmmIeOR8RA-PeGZGVttAcdwHuPveuXVVM",
     authDomain: "order-sekarang.firebaseapp.com",
     databaseURL: "https://order-sekarang-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -364,169 +115,139 @@ const firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  // ===== Menu =====
+  // Full Menu from your Image
   const MENU = [
-    {
-      id: "truffle-pasta",
-      name: "Truffle Mushroom Pasta",
-      desc: "Creamy fettuccine with wild mushrooms",
-      price: 45.000,
-      emoji: "🍝"
-    },
-    {
-      id: "nasi-goreng",
-      name: "Nasi Goreng",
-      desc: "Nasi goreng spesial gila banget",
-      price: 34.000,
-      emoji: "🐟"
-    },
-    {
-      id: "matcha-tiramisu",
-      name: "Matcha Tiramisu",
-      desc: "Layered mascarpone, lady fingers",
-      price: 23.000,
-      emoji: "🍰"
-    }
+    { id: "W01", name: "Bubur Kacang Hijau (Burjo)", price: 12000 },
+    { id: "W02", name: "Burjo Ketan Hitam", price: 13000 },
+    { id: "W03", name: "Indomie Goreng Original", price: 10000 },
+    { id: "W04", name: "Indomie Goreng Telur", price: 14000 },
+    { id: "W05", name: "Indomie Rebus Soto Telur", price: 14000 },
+    { id: "W06", name: "Roti Bakar Coklat Keju", price: 15000 },
+    { id: "W07", name: "Pisang Bakar Coklat Keju", price: 15000 },
+    { id: "W08", name: "Es Kopi Susu Aren", price: 18000 },
+    { id: "W09", name: "Es Kopi Hitam / Americano", price: 15000 },
+    { id: "W10", name: "Es Teh Manis", price: 6000 },
+    { id: "W11", name: "Es Jeruk Peras", price: 12000 }
   ];
 
-  // ===== State =====
-  const cart = {}; // { itemId: qty }
+  const cart = {};
 
-  // ===== Rendering =====
   const menuEl = document.getElementById("menu");
-  const orderBtn = document.getElementById("orderBtn");
+  const cartBar = document.getElementById("cartBar");
+  const viewCartBtn = document.getElementById("viewCartBtn");
+  const cartModal = document.getElementById("cartModal");
+  const closeCartBtn = document.getElementById("closeCartBtn");
+  const cartItemsEl = document.getElementById("cartItems");
+  const confirmOrderBtn = document.getElementById("confirmOrderBtn");
   const successScreen = document.getElementById("successScreen");
-  const successTotalEl = document.getElementById("successTotal");
-  const qrImg = document.getElementById("qrImg");
-  const newOrderBtn = document.getElementById("newOrderBtn");
-  const toastEl = document.getElementById("toast");
 
   function renderMenu() {
     menuEl.innerHTML = "";
     MENU.forEach(item => {
       const qty = cart[item.id] || 0;
-      const row = document.createElement("div");
-      row.className = "item";
-      row.innerHTML = `
-        <div class="item-img">${item.emoji}</div>
-        <div class="item-info">
-          <div class="item-name">${item.name}</div>
-          <div class="item-desc">${item.desc}</div>
-          <div class="item-price">$${item.price.toFixed(2)}</div>
-        </div>
-        <div class="qty-controls" data-id="${item.id}">
-          ${qty > 0 ? `
-            <button class="qty-btn" data-action="dec" aria-label="Remove one">−</button>
-            <span class="qty-num">${qty}</span>
-          ` : ""}
-          <button class="qty-btn add" data-action="inc" aria-label="Add to cart">+</button>
+      menuEl.innerHTML += `
+        <div class="item">
+          <div class="item-info">
+            <div class="item-name">${item.name}</div>
+            <div class="item-price">Rp ${item.price.toLocaleString("id-ID")}</div>
+          </div>
+          <div class="qty-controls" data-id="${item.id}">
+            ${qty > 0 ? `<button class="qty-btn" data-action="dec">−</button><span class="qty-num">${qty}</span>` : ""}
+            <button class="qty-btn add" data-action="inc">+</button>
+          </div>
         </div>
       `;
-      menuEl.appendChild(row);
     });
   }
 
-  function updateCartBar() {
-    const totals = computeTotals();
-    orderBtn.innerHTML = `
-      <span class="count">${totals.count} item${totals.count === 1 ? "" : "s"}</span>
-      <span>Order</span>
-      <span class="price">$${totals.amount.toFixed(2)}</span>
-    `;
-    orderBtn.disabled = totals.count === 0;
+  function renderCartModal() {
+    cartItemsEl.innerHTML = "";
+    MENU.forEach(item => {
+      const qty = cart[item.id] || 0;
+      if (qty > 0) {
+        cartItemsEl.innerHTML += `
+          <div class="item" style="margin-bottom: 10px;">
+            <div class="item-info">
+              <div class="item-name">${item.name}</div>
+              <div class="item-price">Rp ${(item.price * qty).toLocaleString("id-ID")}</div>
+            </div>
+            <div class="qty-controls" data-id="${item.id}">
+              <button class="qty-btn" data-action="dec">−</button>
+              <span class="qty-num">${qty}</span>
+              <button class="qty-btn add" data-action="inc">+</button>
+            </div>
+          </div>
+        `;
+      }
+    });
   }
 
-  function computeTotals() {
+  function updateCart() {
     let count = 0, amount = 0;
     for (const id in cart) {
-      const qty = cart[id];
       const item = MENU.find(m => m.id === id);
-      if (!item || qty <= 0) continue;
-      count += qty;
-      amount += qty * item.price;
+      if (cart[id] > 0) { count += cart[id]; amount += cart[id] * item.price; }
     }
-    return { count, amount };
+    document.getElementById("cartCount").innerText = `${count} item`;
+    document.getElementById("cartTotal").innerText = `Rp ${amount.toLocaleString("id-ID")}`;
+    cartBar.style.display = count > 0 ? "flex" : "none";
+    if (count === 0) cartModal.classList.remove("show");
   }
 
-  // ===== Cart actions =====
-  menuEl.addEventListener("click", (e) => {
+  document.addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-action]");
     if (!btn) return;
-    const wrap = btn.closest(".qty-controls");
-    const id = wrap.dataset.id;
-    const action = btn.dataset.action;
-    cart[id] = cart[id] || 0;
-    if (action === "inc") cart[id] += 1;
-    if (action === "dec") cart[id] = Math.max(0, cart[id] - 1);
-    if (cart[id] === 0) delete cart[id];
+    const id = btn.closest(".qty-controls").dataset.id;
+    if (btn.dataset.action === "inc") { cart[id] = (cart[id] || 0) + 1; }
+    if (btn.dataset.action === "dec") { cart[id] = Math.max(0, cart[id] - 1); }
     renderMenu();
-    updateCartBar();
+    updateCart();
+    if (cartModal.classList.contains("show")) renderCartModal();
   });
 
-  // ===== Order =====
-  orderBtn.addEventListener("click", async () => {
-    const totals = computeTotals();
-    if (totals.count === 0) return;
+  viewCartBtn.addEventListener("click", () => {
+    renderCartModal();
+    cartModal.classList.add("show");
+  });
+  closeCartBtn.addEventListener("click", () => cartModal.classList.remove("show"));
 
-    const items = Object.keys(cart).map(id => {
-      const m = MENU.find(x => x.id === id);
-      return {
-        id,
-        name: m.name,
-        price: m.price,
-        qty: cart[id],
-        subtotal: +(m.price * cart[id]).toFixed(2)
-      };
-    });
-
-    const order = {
-      items,
-      total: +totals.amount.toFixed(2),
-      itemCount: totals.count,
-      timestamp: firebase.database.ServerValue.TIMESTAMP,
-      createdAt: new Date().toISOString()
-    };
-
-    // Loading state
-    orderBtn.disabled = true;
-    orderBtn.innerHTML = `<div class="spinner"></div><span>Placing order…</span><span></span>`;
-
+  confirmOrderBtn.addEventListener("click", async () => {
+    let total = 0;
+    const items = [];
+    for (const id in cart) {
+      if (cart[id] > 0) {
+        const m = MENU.find(x => x.id === id);
+        items.push({ name: m.name, qty: cart[id], price: m.price });
+        total += m.price * cart[id];
+      }
+    }
+    
+    confirmOrderBtn.innerText = "Mengirim...";
     try {
-      const ref = await db.ref("orders").push(order);
-      showSuccess(totals.amount, ref.key);
+      const ref = await db.ref("orders").push({
+        items: items,
+        total: total,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      });
+      cartModal.classList.remove("show");
+      successScreen.classList.add("show");
+      document.getElementById("successTotal").innerText = `Total: Rp ${total.toLocaleString("id-ID")}`;
+      
+      document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=WarkopBrmanoPayment_Total_${total}`;
     } catch (err) {
-      console.error("Order failed:", err);
-      showToast("Couldn't place order. Check Firebase config.", true);
-      updateCartBar();
+      alert("Error sending order!");
+      confirmOrderBtn.innerText = "Send Order to Kitchen";
     }
   });
 
-  function showSuccess(total, orderId) {
-    successTotalEl.textContent = `$${total.toFixed(2)}`;
-    // Dummy QR encoding the order id + amount for "payment"
-    const payload = encodeURIComponent(`bistrobloom:pay?id=${orderId}&amt=${total.toFixed(2)}`);
-    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${payload}`;
-    successScreen.classList.add("show");
-  }
-
   newOrderBtn.addEventListener("click", () => {
-    // Clear cart and reset UI
     for (const k in cart) delete cart[k];
-    renderMenu();
-    updateCartBar();
+    renderMenu(); updateCart();
     successScreen.classList.remove("show");
+    confirmOrderBtn.innerText = "Send Order to Kitchen";
   });
 
-  function showToast(msg, isError) {
-    toastEl.textContent = msg;
-    toastEl.classList.toggle("error", !!isError);
-    toastEl.classList.add("show");
-    setTimeout(() => toastEl.classList.remove("show"), 3000);
-  }
-
-  // ===== Init =====
   renderMenu();
-  updateCartBar();
 </script>
 </body>
 </html>
