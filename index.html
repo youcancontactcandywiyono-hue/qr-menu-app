@@ -6,26 +6,12 @@
 <title>Warkop Brmano</title>
 <style>
   :root {
-    --bg: #f8fafc;
-    --card: #ffffff;
-    --text: #1e293b;
-    --muted: #64748b;
-    --accent: #f97316;
-    --accent-dark: #ea580c;
-    --accent-soft: #ffedd5;
-    --success: #22c55e;
-    --border: #e2e8f0;
-    --shadow: 0 4px 12px rgba(249, 115, 22, 0.06);
+    --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --muted: #64748b;
+    --accent: #f97316; --accent-dark: #ea580c; --accent-soft: #ffedd5;
+    --success: #22c55e; --border: #e2e8f0; --shadow: 0 4px 12px rgba(249, 115, 22, 0.06);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body { 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-    background: var(--bg); 
-    color: var(--text); 
-    min-height: 100vh; 
-    padding-bottom: 120px;
-  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 120px; }
   
   header { padding: 24px 20px 16px; text-align: center; background: var(--card); border-bottom: 1px solid var(--border); }
   .logo-container { width: 90px; height: 90px; margin: 0 auto 12px; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25); overflow: hidden; background: #f1f5f9; }
@@ -33,8 +19,10 @@
   header h1 { font-size: 22px; font-weight: 700; color: var(--text); }
   header p { font-size: 13px; color: var(--muted); margin-top: 2px; }
 
-  .categories-tabs { display: flex; background: var(--card); padding: 4px; margin: 16px; border-radius: 12px; border: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
-  .tab-btn { flex: 1; padding: 10px 4px; border: none; background: transparent; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; border-radius: 8px; transition: all 0.2s ease; }
+  /* Scrollable Tabs */
+  .categories-tabs { display: flex; background: var(--card); padding: 6px; margin: 16px; border-radius: 12px; border: 1px solid var(--border); position: sticky; top: 0; z-index: 10; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+  .categories-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn { flex: 0 0 auto; padding: 10px 16px; border: none; background: transparent; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; border-radius: 8px; transition: all 0.2s ease; }
   .tab-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2); }
 
   .menu-container { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
@@ -42,11 +30,11 @@
   .menu-category-section.active { display: flex; }
 
   .item { background: var(--card); border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); }
-  .item-img-box { width: 80px; height: 80px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #f1f5f9; }
+  .item-img-box { width: 85px; height: 85px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #fff; border: 1px solid #f1f5f9;}
   .item-img-box img { width: 100%; height: 100%; object-fit: cover; }
   .item-info { flex: 1; min-width: 0; }
   .item-name { font-weight: 600; font-size: 15px; color: #0f172a; margin-bottom: 2px; }
-  .item-desc { font-size: 12px; color: var(--muted); line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .item-desc { font-size: 12px; color: var(--muted); line-height: 1.3; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .item-price { font-weight: 700; color: var(--accent-dark); font-size: 14px; }
   
   .qty-controls { display: flex; align-items: center; background: var(--accent-soft); padding: 4px; border-radius: 8px; gap: 8px; }
@@ -62,7 +50,12 @@
   .modal-header { padding: 20px; background: white; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
   .close-btn { background: none; border: none; font-size: 16px; color: var(--accent-dark); cursor: pointer; font-weight: bold;}
   .modal-content { padding: 16px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 12px; }
-  .confirm-btn { background: var(--success); color: white; width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; margin-top: auto; cursor: pointer; box-shadow: 0 6px 18px rgba(34, 197, 94, 0.3); }
+  
+  /* Textarea Notes */
+  .notes-box { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; resize: none; margin-top: 10px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);}
+  .notes-box:focus { outline: none; border-color: var(--accent); }
+
+  .confirm-btn { background: var(--success); color: white; width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; margin-top: 10px; cursor: pointer; box-shadow: 0 6px 18px rgba(34, 197, 94, 0.3); }
   
   .success-screen { display: none; position: fixed; inset: 0; background: #f8fafc; z-index: 100; flex-direction: column; overflow-y: auto; padding-bottom: 40px;}
   .success-screen.show { display: flex; }
@@ -71,7 +64,7 @@
   
   .payment-card { background: white; margin: 16px; border-radius: 16px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03); text-align: center;}
   .payment-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-  .pay-tab-btn { flex: 1; padding: 12px; border: 1px solid var(--border); background: white; border-radius: 10px; font-weight: 600; color: var(--muted); cursor: pointer; }
+  .pay-tab-btn { flex: 1; padding: 12px; border: 1px solid var(--border); background: white; border-radius: 10px; font-weight: 600; color: var(--muted); cursor: pointer; font-size: 13px;}
   .pay-tab-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-dark); }
   
   .qris-img { width: 100%; max-width: 240px; border-radius: 12px; margin: 10px auto; border: 2px solid var(--border); display: block;}
@@ -92,15 +85,18 @@
 </header>
 
 <div class="categories-tabs">
-  <button class="tab-btn active" onclick="switchCategory('makanan')">Makanan</button>
-  <button class="tab-btn" onclick="switchCategory('minuman')">Minuman</button>
+  <button class="tab-btn active" onclick="switchCategory('makanan')">Makanan Manado</button>
   <button class="tab-btn" onclick="switchCategory('cemilan')">Cemilan</button>
+  <button class="tab-btn" onclick="switchCategory('minuman_dingin')">Minuman Dingin</button>
+  <button class="tab-btn" onclick="switchCategory('minuman_panas')">Minuman Panas</button>
 </div>
 
 <div class="menu-container">
   <div id="sec-makanan" class="menu-category-section active"></div>
-  <div id="sec-minuman" class="menu-category-section"></div>
   <div id="sec-cemilan" class="menu-category-section"></div>
+  <div id="sec-minuman_dingin" class="menu-category-section"></div>
+  <div id="sec-minuman_panas" class="menu-category-section"></div>
+  <div style="text-align:center; padding:20px 10px 40px; font-size:12px; color:var(--muted); font-weight:600;">*Harga sudah termasuk pajak & service</div>
 </div>
 
 <div class="cart-bar" id="cartBar" style="display: none;">
@@ -118,6 +114,9 @@
   </div>
   <div class="modal-content">
     <div id="cartItems" style="display: flex; flex-direction: column; gap: 12px;"></div>
+    
+    <textarea id="orderNotes" class="notes-box" rows="3" placeholder="Catatan untuk dapur (opsional). Misal: Mie jangan pedas, Kopi gulanya sedikit..."></textarea>
+
     <button class="confirm-btn" id="confirmOrderBtn">Bayar Sekarang</button>
   </div>
 </div>
@@ -135,32 +134,26 @@
     
     <div class="payment-tabs">
       <button class="pay-tab-btn active" id="btnQris" onclick="switchPayment('qris')">QRIS / E-Wallet</button>
-      <button class="pay-tab-btn" id="btnCash" onclick="switchPayment('cash')">Bayar di Kasir</button>
+      <button class="pay-tab-btn" id="btnWaiter" onclick="switchPayment('waiter')">Panggil Pelayan</button>
     </div>
 
     <div id="qrisSection">
-      <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Scan QR code di bawah menggunakan aplikasi E-Wallet atau M-Banking Anda, dan <b>masukkan nominal tagihan.</b></p>
-      
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Scan QR code di bawah menggunakan aplikasi E-Wallet atau M-Banking, dan <b>masukkan nominal tagihan.</b></p>
       <img src="qris.jpg" alt="QRIS Warkop Brmano" class="qris-img" onerror="this.src='https://placehold.co/240x240/e2e8f0/64748b?text=Upload+qris.jpg+di+GitHub'">
-      
       <div class="payment-logos">
-        <span>Gopay</span>
-        <span>OVO</span>
-        <span>DANA</span>
-        <span>ShopeePay</span>
-        <span>M-BCA</span>
+        <span>Gopay</span><span>OVO</span><span>DANA</span><span>ShopeePay</span><span>M-BCA</span>
       </div>
-      <p style="font-size: 12px; color: var(--success); font-weight: 600; margin-top: 16px;">Tunjukkan bukti transfer ke Kasir / Pelayan.</p>
+      <p style="font-size: 12px; color: var(--success); font-weight: 600; margin-top: 16px;">Tunjukkan bukti transfer ke Pelayan kami.</p>
     </div>
 
-    <div id="cashSection" style="display: none; padding: 20px 0;">
-      <div style="font-size: 40px; margin-bottom: 10px;">💵</div>
-      <p style="color: #0f172a; font-weight: 600;">Pembayaran Tunai</p>
-      <p style="font-size: 13px; color: var(--muted); margin-top: 8px;">Silahkan hampiri kasir dan sebutkan pesanan Anda untuk melakukan pembayaran secara tunai.</p>
+    <div id="waiterSection" style="display: none; padding: 20px 0;">
+      <div style="font-size: 40px; margin-bottom: 10px;">🙋‍♂️</div>
+      <p style="color: #0f172a; font-weight: 600; font-size: 18px;">Silahkan Panggil Pelayan</p>
+      <p style="font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.5;">Jika Anda ingin membayar secara tunai, butuh bantuan lain, atau ingin tambah pesanan, jangan ragu untuk memanggil pelayan kami yang sedang bertugas.</p>
     </div>
   </div>
 
-  <button class="new-order-btn" id="newOrderBtn">Tutup & Buat Pesanan Baru</button>
+  <button class="new-order-btn" id="newOrderBtn">Selesai & Buat Pesanan Baru</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -181,33 +174,49 @@
   const db = firebase.database();
 
   const MENU = [
-    { id: "W01", category: "cemilan", name: "Bubur Kacang Hijau (Burjo)", desc: "Bubur kacang hijau manis legit berpadu santan gurih melimpah.", price: 12000, img: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=200&auto=format&fit=crop&q=60" },
-    { id: "W02", category: "cemilan", name: "Burjo Ketan Hitam", desc: "Perpaduan pas burjo spesial dengan tambahan ketan hitam manis yang lembut.", price: 13000, img: "https://images.unsplash.com/photo-1600850056064-a8b380df8395?w=200&auto=format&fit=crop&q=60" },
-    { id: "W03", category: "makanan", name: "Indomie Goreng Original", desc: "Mie goreng favorit sejuta umat disajikan hangat dengan rasa gurih yang pas khas warkop.", price: 10000, img: "https://images.unsplash.com/photo-1612966608997-30d411b48217?w=200&auto=format&fit=crop&q=60" },
-    { id: "W04", category: "makanan", name: "Indomie Goreng Telur", desc: "Indomie goreng legendaris dilengkapi dengan tambahan telur ceplok/dadar spesial.", price: 14000, img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=200&auto=format&fit=crop&q=60" },
-    { id: "W05", category: "makanan", name: "Indomie Rebus Soto Telur", desc: "Mie kuah rasa soto hangat gurih disajikan dengan rebusan telur segar.", price: 14000, img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&auto=format&fit=crop&q=60" },
-    { id: "W06", category: "cemilan", name: "Roti Bakar Coklat Keju", desc: "Roti bakar renyah garing di luar, dengan taburan meses coklat tebal dan keju parut.", price: 15000, img: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=200&auto=format&fit=crop&q=60" },
-    { id: "W07", category: "cemilan", name: "Pisang Bakar Coklat Keju", desc: "Pisang manis dibakar karamel, diguyur susu kental manis, coklat, dan parutan keju gurih.", price: 15000, img: "https://images.unsplash.com/photo-1528825871115-3581a5387919?w=200&auto=format&fit=crop&q=60" },
-    { id: "W08", category: "minuman", name: "Es Kopi Susu Aren", desc: "Es kopi susu racikan warkop menggunakan robusta espresso murni dan gula aren premium.", price: 18000, img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&auto=format&fit=crop&q=60" },
-    { id: "W09", category: "minuman", name: "Es Kopi Hitam / Americano", desc: "Seduhan kopi hitam murni dingin tanpa ampas, sangat pas menyegarkan fokus hari Anda.", price: 15000, img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&auto=format&fit=crop&q=60" },
-    { id: "W10", category: "minuman", name: "Es Teh Manis", desc: "Es teh manis klasik seduhan daun teh pilihan, pelepas dahaga paling ampuh.", price: 6000, img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=200&auto=format&fit=crop&q=60" },
-    { id: "W11", category: "minuman", name: "Es Jeruk Peras", desc: "Perasan murni buah jeruk asli segar kaya vitamin, kombinasi manis asam dingin optimal.", price: 12000, img: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=200&auto=format&fit=crop&q=60" }
+    // MAKANAN
+    { id: "M01", category: "makanan", name: "Tinutuan (Bubur Manado)", desc: "Bubur sayur labu, jagung, bayam, kemangi dengan ikan asin & sambal roa.", price: 28000, img: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=200&h=200&fit=crop" },
+    { id: "M02", category: "makanan", name: "Nasi Kuning Cakalang", desc: "Nasi pulen dengan suwiran cakalang fufu pedas, telur, mie goreng & dabu-dabu.", price: 35000, img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200&h=200&fit=crop" },
+    { id: "M03", category: "makanan", name: "Mie Cakalang Pedas", desc: "Mie kuning bumbu rica dengan cakalang fufu suwir dan irisan rawit segar.", price: 32000, img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=200&h=200&fit=crop" },
+    { id: "M04", category: "makanan", name: "Nasi Bakar Rica", desc: "Nasi bumbu rica dibungkus daun pisang lalu dibakar, gurih dan harum.", price: 35000, img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=200&fit=crop" },
+    { id: "M05", category: "makanan", name: "Ayam Rica-Rica (+Nasi)", desc: "Potongan ayam bumbu rica khas Manado pedas menggigit dengan nasi putih.", price: 42000, img: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=200&h=200&fit=crop" },
+    { id: "M06", category: "makanan", name: "Ikan Cakalang Fufu Dabu-Dabu (+Nasi)", desc: "Cakalang asap disuwir, disiram sambal dabu-dabu segar dengan nasi putih.", price: 45000, img: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=200&h=200&fit=crop" },
+    { id: "M07", category: "makanan", name: "Nasi Komplit Manado", desc: "Nasi, ayam rica, perkedel jagung, sambal roa, dan sayur bunga pepaya tumis.", price: 40000, img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" },
+    
+    // CEMILAN
+    { id: "C01", category: "cemilan", name: "Panada Isi Cakalang", desc: "Roti goreng khas Manado isi cakalang bumbu rica pedas (Isi 2 pcs).", price: 15000, img: "https://images.unsplash.com/photo-1604634077374-df6110f01ce7?w=200&h=200&fit=crop" },
+    { id: "C02", category: "cemilan", name: "Pisang Goroho Goreng", desc: "Pisang goroho renyah khas Sulut disajikan dengan sambal roa pedas.", price: 20000, img: "https://images.unsplash.com/photo-1582294440049-338c35b5ceb4?w=200&h=200&fit=crop" },
+    { id: "C03", category: "cemilan", name: "Lalampa", desc: "Ketan isi cakalang pedas dibungkus daun pisang lalu dibakar.", price: 18000, img: "https://images.unsplash.com/photo-1625938144755-652e08e359b7?w=200&h=200&fit=crop" },
+    { id: "C04", category: "cemilan", name: "Klappertaart", desc: "Dessert dingin panggang dari kelapa muda, susu, dan kuning telur.", price: 25000, img: "https://images.unsplash.com/photo-1579954115545-a95edc502b74?w=200&h=200&fit=crop" },
+    { id: "C05", category: "cemilan", name: "Pisang Goreng Sambal Roa", desc: "Pisang kepok goreng crispy dicocol sambal roa manis-pedas-gurih.", price: 22000, img: "https://images.unsplash.com/photo-1528825871115-3581a5387919?w=200&h=200&fit=crop" },
+    { id: "C06", category: "cemilan", name: "Onde-Onde Wijen", desc: "Bola ketan isi kacang hijau berbalut wijen hangat (Isi 4 pcs).", price: 15000, img: "https://images.unsplash.com/photo-1630175860333-5161ae38ee0d?w=200&h=200&fit=crop" },
+
+    // MINUMAN DINGIN
+    { id: "D01", category: "minuman_dingin", name: "Es Kopi Susu Gula Aren", desc: "Espresso, susu segar, dan sirup aren asli. Favorit pelanggan.", price: 25000, img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&h=200&fit=crop" },
+    { id: "D02", category: "minuman_dingin", name: "Es Kopi Klappertaart [SIGNATURE]", desc: "Kopi susu dingin dengan saus klappertaart lembut & taburan kayu manis.", price: 32000, img: "https://images.unsplash.com/photo-1557006021-b85faa2bc5e2?w=200&h=200&fit=crop" },
+    { id: "D03", category: "minuman_dingin", name: "Es Kopi Pala", desc: "Kopi susu dengan sirup pala asli Sangihe. Aroma rempah unik segar.", price: 28000, img: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=200&h=200&fit=crop" },
+    { id: "D04", category: "minuman_dingin", name: "Es Kopi Pisang Goroho", desc: "Kopi susu dipadu puree pisang goroho, creamy dan sedikit gurih.", price: 30000, img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=200&h=200&fit=crop" },
+    { id: "D05", category: "minuman_dingin", name: "Iced Americano", desc: "Double shot espresso dengan es batu dingin. Pahit bersih.", price: 25000, img: "https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=200&h=200&fit=crop" },
+    { id: "D06", category: "minuman_dingin", name: "Es Cokelat Manado", desc: "Cokelat lokal Minahasa dengan susu segar manis yang lembut.", price: 24000, img: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&h=200&fit=crop" },
+
+    // MINUMAN PANAS
+    { id: "P01", category: "minuman_panas", name: "Kopi Tubruk Manado", desc: "Kopi robusta Minahasa tubruk klasik beraroma pegunungan.", price: 18000, img: "https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=200&h=200&fit=crop" },
+    { id: "P02", category: "minuman_panas", name: "Kopi Susu Klasik", desc: "Espresso single shot dengan susu hangat manis pas.", price: 22000, img: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&h=200&fit=crop" },
+    { id: "P03", category: "minuman_panas", name: "Kopi Rempah Khas Manado", desc: "Robusta hangat dengan kayu manis, cengkeh, dan pala.", price: 25000, img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&h=200&fit=crop" },
+    { id: "P04", category: "minuman_panas", name: "Cappuccino", desc: "Espresso panas dengan susu steam dan microfoam tebal.", price: 28000, img: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&h=200&fit=crop" },
+    { id: "P05", category: "minuman_panas", name: "Saraba", desc: "Minuman jahe merah, aren, dan santan ringan khas Sulawesi.", price: 20000, img: "https://images.unsplash.com/photo-1595434091143-b375cef588f7?w=200&h=200&fit=crop" },
+    { id: "P06", category: "minuman_panas", name: "Teh Tarik", desc: "Teh hitam ditarik dengan susu kental manis sampai berbusa.", price: 18000, img: "https://images.unsplash.com/photo-1561336313-0bd5e0b27ec8?w=200&h=200&fit=crop" }
   ];
 
   const cart = {};
 
   function renderMenu() {
-    const secMakanan = document.getElementById("sec-makanan");
-    const secMinuman = document.getElementById("sec-minuman");
-    const secCemilan = document.getElementById("sec-cemilan");
-
-    secMakanan.innerHTML = ""; secMinuman.innerHTML = ""; secCemilan.innerHTML = "";
+    const categories = ['makanan', 'cemilan', 'minuman_dingin', 'minuman_panas'];
+    categories.forEach(cat => document.getElementById(`sec-${cat}`).innerHTML = "");
 
     MENU.forEach(item => {
       const qty = cart[item.id] || 0;
-      const targetSection = item.category === "makanan" ? secMakanan : (item.category === "minuman" ? secMinuman : secCemilan);
-
-      targetSection.innerHTML += `
+      document.getElementById(`sec-${item.category}`).innerHTML += `
         <div class="item">
           <div class="item-img-box"><img src="${item.img}" alt="${item.name}"></div>
           <div class="item-info">
@@ -227,7 +236,6 @@
   function switchCategory(catName) {
     document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
     document.querySelectorAll(".menu-category-section").forEach(sec => sec.classList.remove("active"));
-    
     event.target.classList.add("active");
     document.getElementById(`sec-${catName}`).classList.add("active");
   }
@@ -240,9 +248,9 @@
       if (qty > 0) {
         cartItemsEl.innerHTML += `
           <div class="item">
-            <div class="item-img-box"><img src="${item.img}" alt="${item.name}"></div>
+            <div class="item-img-box" style="width:60px; height:60px;"><img src="${item.img}"></div>
             <div class="item-info">
-              <div class="item-name">${item.name}</div>
+              <div class="item-name" style="font-size:14px;">${item.name}</div>
               <div class="item-price">Rp ${(item.price * qty).toLocaleString("id-ID")}</div>
             </div>
             <div class="qty-controls" data-id="${item.id}">
@@ -275,14 +283,12 @@
     if (btn.dataset.action === "inc") { cart[id] = (cart[id] || 0) + 1; }
     if (btn.dataset.action === "dec") { cart[id] = Math.max(0, cart[id] - 1); }
     if (cart[id] === 0) delete cart[id];
-    renderMenu();
-    updateCartBar();
+    renderMenu(); updateCartBar();
     if (document.getElementById("cartModal").classList.contains("show")) renderCartModal();
   });
 
   document.getElementById("viewCartBtn").addEventListener("click", () => {
-    renderCartModal();
-    document.getElementById("cartModal").classList.add("show");
+    renderCartModal(); document.getElementById("cartModal").classList.add("show");
   });
   document.getElementById("closeCartBtn").addEventListener("click", () => {
     document.getElementById("cartModal").classList.remove("show");
@@ -290,22 +296,21 @@
 
   function switchPayment(type) {
     document.getElementById("btnQris").classList.remove("active");
-    document.getElementById("btnCash").classList.remove("active");
+    document.getElementById("btnWaiter").classList.remove("active");
     document.getElementById("qrisSection").style.display = "none";
-    document.getElementById("cashSection").style.display = "none";
+    document.getElementById("waiterSection").style.display = "none";
 
     if(type === 'qris') {
       document.getElementById("btnQris").classList.add("active");
       document.getElementById("qrisSection").style.display = "block";
     } else {
-      document.getElementById("btnCash").classList.add("active");
-      document.getElementById("cashSection").style.display = "block";
+      document.getElementById("btnWaiter").classList.add("active");
+      document.getElementById("waiterSection").style.display = "block";
     }
   }
 
   document.getElementById("confirmOrderBtn").addEventListener("click", async () => {
-    let total = 0;
-    const items = [];
+    let total = 0; const items = [];
     for (const id in cart) {
       if (cart[id] > 0) {
         const m = MENU.find(x => x.id === id);
@@ -314,31 +319,30 @@
       }
     }
     
+    const notesValue = document.getElementById("orderNotes").value.trim();
     const confirmOrderBtn = document.getElementById("confirmOrderBtn");
-    confirmOrderBtn.disabled = true;
-    confirmOrderBtn.innerText = "Memproses...";
+    confirmOrderBtn.disabled = true; confirmOrderBtn.innerText = "Memproses...";
     
     try {
       await db.ref("orders").push({
         items: items,
         total: total,
+        notes: notesValue,
         timestamp: firebase.database.ServerValue.TIMESTAMP
       });
       document.getElementById("cartModal").classList.remove("show");
       document.getElementById("successScreen").classList.add("show");
       document.getElementById("successTotal").innerText = `Rp ${total.toLocaleString("id-ID")}`;
-      
     } catch (err) {
       alert("Gagal memproses pesanan!");
-      confirmOrderBtn.disabled = false;
-      confirmOrderBtn.innerText = "Bayar Sekarang";
+      confirmOrderBtn.disabled = false; confirmOrderBtn.innerText = "Bayar Sekarang";
     }
   });
 
   document.getElementById("newOrderBtn").addEventListener("click", () => {
     for (const k in cart) delete cart[k];
-    renderMenu(); 
-    updateCartBar();
+    document.getElementById("orderNotes").value = "";
+    renderMenu(); updateCartBar();
     document.getElementById("successScreen").classList.remove("show");
     document.getElementById("confirmOrderBtn").disabled = false;
     document.getElementById("confirmOrderBtn").innerText = "Bayar Sekarang";
