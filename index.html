@@ -134,22 +134,22 @@
     
     <div class="payment-tabs">
       <button class="pay-tab-btn active" id="btnQris" onclick="switchPayment('qris')">QRIS / E-Wallet</button>
-      <button class="pay-tab-btn" id="btnWaiter" onclick="switchPayment('waiter')">Panggil Pelayan</button>
+      <button class="pay-tab-btn" id="btnCash" onclick="switchPayment('cash')">Bayar di Kasir</button>
     </div>
 
     <div id="qrisSection">
-      <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Scan QR code di bawah menggunakan aplikasi E-Wallet atau M-Banking, dan <b>masukkan nominal tagihan.</b></p>
+      <p style="font-size: 14px; color: var(--text); margin-bottom: 12px;"><b>Screenshot QR ini</b> dan bayar menggunakan aplikasi pilihan kamu.</p>
       <img src="qris.jpg" alt="QRIS Warkop Brmano" class="qris-img" onerror="this.src='https://placehold.co/240x240/e2e8f0/64748b?text=Upload+qris.jpg+di+GitHub'">
       <div class="payment-logos">
         <span>Gopay</span><span>OVO</span><span>DANA</span><span>ShopeePay</span><span>M-BCA</span>
       </div>
-      <p style="font-size: 12px; color: var(--success); font-weight: 600; margin-top: 16px;">Tunjukkan bukti transfer ke Pelayan kami.</p>
+      <p style="font-size: 12px; color: var(--success); font-weight: 600; margin-top: 16px;">Tunjukkan bukti bayar ke Kasir.</p>
     </div>
 
-    <div id="waiterSection" style="display: none; padding: 20px 0;">
-      <div style="font-size: 40px; margin-bottom: 10px;">🙋‍♂️</div>
-      <p style="color: #0f172a; font-weight: 600; font-size: 18px;">Silahkan Panggil Pelayan</p>
-      <p style="font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.5;">Jika Anda ingin membayar secara tunai, butuh bantuan lain, atau ingin tambah pesanan, jangan ragu untuk memanggil pelayan kami yang sedang bertugas.</p>
+    <div id="cashSection" style="display: none; padding: 20px 0;">
+      <div style="font-size: 40px; margin-bottom: 10px;">💵</div>
+      <p style="color: #0f172a; font-weight: 600; font-size: 18px;">Bayar Tunai</p>
+      <p style="font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.5;">Hampiri kasir dan sebutkan pesanan kamu untuk membayar.</p>
     </div>
   </div>
 
@@ -174,7 +174,6 @@
   const db = firebase.database();
 
   const MENU = [
-    // MAKANAN
     { id: "M01", category: "makanan", name: "Tinutuan (Bubur Manado)", desc: "Bubur sayur labu, jagung, bayam, kemangi dengan ikan asin & sambal roa.", price: 28000, img: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=200&h=200&fit=crop" },
     { id: "M02", category: "makanan", name: "Nasi Kuning Cakalang", desc: "Nasi pulen dengan suwiran cakalang fufu pedas, telur, mie goreng & dabu-dabu.", price: 35000, img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200&h=200&fit=crop" },
     { id: "M03", category: "makanan", name: "Mie Cakalang Pedas", desc: "Mie kuning bumbu rica dengan cakalang fufu suwir dan irisan rawit segar.", price: 32000, img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=200&h=200&fit=crop" },
@@ -183,7 +182,6 @@
     { id: "M06", category: "makanan", name: "Ikan Cakalang Fufu Dabu-Dabu (+Nasi)", desc: "Cakalang asap disuwir, disiram sambal dabu-dabu segar dengan nasi putih.", price: 45000, img: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=200&h=200&fit=crop" },
     { id: "M07", category: "makanan", name: "Nasi Komplit Manado", desc: "Nasi, ayam rica, perkedel jagung, sambal roa, dan sayur bunga pepaya tumis.", price: 40000, img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" },
     
-    // CEMILAN
     { id: "C01", category: "cemilan", name: "Panada Isi Cakalang", desc: "Roti goreng khas Manado isi cakalang bumbu rica pedas (Isi 2 pcs).", price: 15000, img: "https://images.unsplash.com/photo-1604634077374-df6110f01ce7?w=200&h=200&fit=crop" },
     { id: "C02", category: "cemilan", name: "Pisang Goroho Goreng", desc: "Pisang goroho renyah khas Sulut disajikan dengan sambal roa pedas.", price: 20000, img: "https://images.unsplash.com/photo-1582294440049-338c35b5ceb4?w=200&h=200&fit=crop" },
     { id: "C03", category: "cemilan", name: "Lalampa", desc: "Ketan isi cakalang pedas dibungkus daun pisang lalu dibakar.", price: 18000, img: "https://images.unsplash.com/photo-1625938144755-652e08e359b7?w=200&h=200&fit=crop" },
@@ -191,7 +189,6 @@
     { id: "C05", category: "cemilan", name: "Pisang Goreng Sambal Roa", desc: "Pisang kepok goreng crispy dicocol sambal roa manis-pedas-gurih.", price: 22000, img: "https://images.unsplash.com/photo-1528825871115-3581a5387919?w=200&h=200&fit=crop" },
     { id: "C06", category: "cemilan", name: "Onde-Onde Wijen", desc: "Bola ketan isi kacang hijau berbalut wijen hangat (Isi 4 pcs).", price: 15000, img: "https://images.unsplash.com/photo-1630175860333-5161ae38ee0d?w=200&h=200&fit=crop" },
 
-    // MINUMAN DINGIN
     { id: "D01", category: "minuman_dingin", name: "Es Kopi Susu Gula Aren", desc: "Espresso, susu segar, dan sirup aren asli. Favorit pelanggan.", price: 25000, img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&h=200&fit=crop" },
     { id: "D02", category: "minuman_dingin", name: "Es Kopi Klappertaart [SIGNATURE]", desc: "Kopi susu dingin dengan saus klappertaart lembut & taburan kayu manis.", price: 32000, img: "https://images.unsplash.com/photo-1557006021-b85faa2bc5e2?w=200&h=200&fit=crop" },
     { id: "D03", category: "minuman_dingin", name: "Es Kopi Pala", desc: "Kopi susu dengan sirup pala asli Sangihe. Aroma rempah unik segar.", price: 28000, img: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=200&h=200&fit=crop" },
@@ -199,7 +196,6 @@
     { id: "D05", category: "minuman_dingin", name: "Iced Americano", desc: "Double shot espresso dengan es batu dingin. Pahit bersih.", price: 25000, img: "https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=200&h=200&fit=crop" },
     { id: "D06", category: "minuman_dingin", name: "Es Cokelat Manado", desc: "Cokelat lokal Minahasa dengan susu segar manis yang lembut.", price: 24000, img: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&h=200&fit=crop" },
 
-    // MINUMAN PANAS
     { id: "P01", category: "minuman_panas", name: "Kopi Tubruk Manado", desc: "Kopi robusta Minahasa tubruk klasik beraroma pegunungan.", price: 18000, img: "https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=200&h=200&fit=crop" },
     { id: "P02", category: "minuman_panas", name: "Kopi Susu Klasik", desc: "Espresso single shot dengan susu hangat manis pas.", price: 22000, img: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&h=200&fit=crop" },
     { id: "P03", category: "minuman_panas", name: "Kopi Rempah Khas Manado", desc: "Robusta hangat dengan kayu manis, cengkeh, dan pala.", price: 25000, img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&h=200&fit=crop" },
@@ -296,16 +292,16 @@
 
   function switchPayment(type) {
     document.getElementById("btnQris").classList.remove("active");
-    document.getElementById("btnWaiter").classList.remove("active");
+    document.getElementById("btnCash").classList.remove("active");
     document.getElementById("qrisSection").style.display = "none";
-    document.getElementById("waiterSection").style.display = "none";
+    document.getElementById("cashSection").style.display = "none";
 
     if(type === 'qris') {
       document.getElementById("btnQris").classList.add("active");
       document.getElementById("qrisSection").style.display = "block";
     } else {
-      document.getElementById("btnWaiter").classList.add("active");
-      document.getElementById("waiterSection").style.display = "block";
+      document.getElementById("btnCash").classList.add("active");
+      document.getElementById("cashSection").style.display = "block";
     }
   }
 
