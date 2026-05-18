@@ -27,7 +27,7 @@
     padding-bottom: 120px;
   }
   
-  /* Header & Logo Bulat Sempurna */
+  /* Header & Logo */
   header { 
     padding: 24px 20px 16px; 
     text-align: center; 
@@ -82,7 +82,7 @@
     box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2);
   }
 
-  /* Menu Layout ala Gambar */
+  /* Menu Layout */
   .menu-container { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
   .menu-category-section { display: none; flex-direction: column; gap: 12px; }
   .menu-category-section.active { display: flex; }
@@ -145,7 +145,7 @@
 
 <header>
   <div class="logo-container">
-    <img src="logo.jpg" alt="Warkop Brmano Logo" class="logo-img">
+    <img src="warkop brmano logo.png" alt="Warkop Brmano Logo" class="logo-img">
   </div>
   <h1>Warkop Brmano</h1>
   <p>Pesan langsung dari meja Anda • Fresh & Cepat</p>
@@ -204,164 +204,3 @@
     messagingSenderId: "559153338639",
     appId: "1:559153338639:web:0db7097a44e5f52a4d067a"
   };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-
-  // FOTO MENU REALISTIS DARI UNSPLASH
-  const MENU = [
-    { id: "W01", category: "cemilan", name: "Bubur Kacang Hijau (Burjo)", desc: "Bubur kacang hijau manis legit berpadu santan gurih melimpah.", price: 12000, img: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=200&auto=format&fit=crop&q=60" },
-    { id: "W02", category: "cemilan", name: "Burjo Ketan Hitam", desc: "Perpaduan pas burjo spesial dengan tambahan ketan hitam manis yang lembut.", price: 13000, img: "https://images.unsplash.com/photo-1600850056064-a8b380df8395?w=200&auto=format&fit=crop&q=60" },
-    { id: "W03", category: "makanan", name: "Indomie Goreng Original", desc: "Mie goreng favorit sejuta umat disajikan hangat dengan rasa gurih yang pas khas warkop.", price: 10000, img: "https://images.unsplash.com/photo-1612966608997-30d411b48217?w=200&auto=format&fit=crop&q=60" },
-    { id: "W04", category: "makanan", name: "Indomie Goreng Telur", desc: "Indomie goreng legendaris dilengkapi dengan tambahan telur ceplok/dadar spesial.", price: 14000, img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=200&auto=format&fit=crop&q=60" },
-    { id: "W05", category: "makanan", name: "Indomie Rebus Soto Telur", desc: "Mie kuah rasa soto hangat gurih disajikan dengan rebusan telur segar.", price: 14000, img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&auto=format&fit=crop&q=60" },
-    { id: "W06", category: "cemilan", name: "Roti Bakar Coklat Keju", desc: "Roti bakar renyah garing di luar, dengan taburan meses coklat tebal dan keju parut.", price: 15000, img: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=200&auto=format&fit=crop&q=60" },
-    { id: "W07", category: "cemilan", name: "Pisang Bakar Coklat Keju", desc: "Pisang manis dibakar karamel, diguyur susu kental manis, coklat, dan parutan keju gurih.", price: 15000, img: "https://images.unsplash.com/photo-1528825871115-3581a5387919?w=200&auto=format&fit=crop&q=60" },
-    { id: "W08", category: "minuman", name: "Es Kopi Susu Aren", desc: "Es kopi susu racikan warkop menggunakan robusta espresso murni dan gula aren premium.", price: 18000, img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&auto=format&fit=crop&q=60" },
-    { id: "W09", category: "minuman", name: "Es Kopi Hitam / Americano", desc: "Seduhan kopi hitam murni dingin tanpa ampas, sangat pas menyegarkan fokus hari Anda.", price: 15000, img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&auto=format&fit=crop&q=60" },
-    { id: "W10", category: "minuman", name: "Es Teh Manis", desc: "Es teh manis klasik seduhan daun teh pilihan, pelepas dahaga paling ampuh.", price: 6000, img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=200&auto=format&fit=crop&q=60" },
-    { id: "W11", category: "minuman", name: "Es Jeruk Peras", desc: "Perasan murni buah jeruk asli segar kaya vitamin, kombinasi manis asam dingin optimal.", price: 12000, img: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=200&auto=format&fit=crop&q=60" }
-  ];
-
-  const cart = {};
-
-  function renderMenu() {
-    const secMakanan = document.getElementById("sec-makanan");
-    const secMinuman = document.getElementById("sec-minuman");
-    const secCemilan = document.getElementById("sec-cemilan");
-
-    secMakanan.innerHTML = ""; secMinuman.innerHTML = ""; secCemilan.innerHTML = "";
-
-    MENU.forEach(item => {
-      const qty = cart[item.id] || 0;
-      const targetSection = item.category === "makanan" ? secMakanan : (item.category === "minuman" ? secMinuman : secCemilan);
-
-      targetSection.innerHTML += `
-        <div class="item">
-          <div class="item-img-box"><img src="${item.img}" alt="${item.name}"></div>
-          <div class="item-info">
-            <div class="item-name">${item.name}</div>
-            <div class="item-desc">${item.desc}</div>
-            <div class="item-price">Rp ${item.price.toLocaleString("id-ID")}</div>
-          </div>
-          <div class="qty-controls" data-id="${item.id}">
-            ${qty > 0 ? `
-              <button class="qty-btn" data-action="dec">−</button>
-              <span class="qty-num">${qty}</span>
-            ` : ""}
-            <button class="qty-btn ${qty === 0 ? 'add' : ''}" data-action="inc">${qty === 0 ? 'Tambah' : '+'}</button>
-          </div>
-        </div>
-      `;
-    });
-  }
-
-  function switchCategory(catName) {
-    document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-    document.querySelectorAll(".menu-category-section").forEach(sec => sec.classList.remove("active"));
-    
-    event.target.classList.add("active");
-    document.getElementById(`sec-${catName}`).classList.add("active");
-  }
-
-  function renderCartModal() {
-    const cartItemsEl = document.getElementById("cartItems");
-    cartItemsEl.innerHTML = "";
-    MENU.forEach(item => {
-      const qty = cart[item.id] || 0;
-      if (qty > 0) {
-        cartItemsEl.innerHTML += `
-          <div class="item">
-            <div class="item-img-box"><img src="${item.img}" alt="${item.name}"></div>
-            <div class="item-info">
-              <div class="item-name">${item.name}</div>
-              <div class="item-price">Rp ${(item.price * qty).toLocaleString("id-ID")}</div>
-            </div>
-            <div class="qty-controls" data-id="${item.id}">
-              <button class="qty-btn" data-action="dec">−</button>
-              <span class="qty-num">${qty}</span>
-              <button class="qty-btn" data-action="inc">+</button>
-            </div>
-          </div>
-        `;
-      }
-    });
-  }
-
-  function updateCartBar() {
-    let count = 0, amount = 0;
-    for (const id in cart) {
-      const item = MENU.find(m => m.id === id);
-      if (cart[id] > 0) { count += cart[id]; amount += cart[id] * item.price; }
-    }
-    document.getElementById("cartCount").innerText = `${count} item`;
-    document.getElementById("cartTotal").innerText = `Rp ${amount.toLocaleString("id-ID")}`;
-    document.getElementById("cartBar").style.display = count > 0 ? "flex" : "none";
-    if (count === 0) document.getElementById("cartModal").classList.remove("show");
-  }
-
-  document.addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-action]");
-    if (!btn) return;
-    const id = btn.closest(".qty-controls").dataset.id;
-    if (btn.dataset.action === "inc") { cart[id] = (cart[id] || 0) + 1; }
-    if (btn.dataset.action === "dec") { cart[id] = Math.max(0, cart[id] - 1); }
-    if (cart[id] === 0) delete cart[id];
-    renderMenu();
-    updateCartBar();
-    if (document.getElementById("cartModal").classList.contains("show")) renderCartModal();
-  });
-
-  document.getElementById("viewCartBtn").addEventListener("click", () => {
-    renderCartModal();
-    document.getElementById("cartModal").classList.add("show");
-  });
-  document.getElementById("closeCartBtn").addEventListener("click", () => {
-    document.getElementById("cartModal").classList.remove("show");
-  });
-
-  document.getElementById("confirmOrderBtn").addEventListener("click", async () => {
-    let total = 0;
-    const items = [];
-    for (const id in cart) {
-      if (cart[id] > 0) {
-        const m = MENU.find(x => x.id === id);
-        items.push({ name: m.name, qty: cart[id], price: m.price });
-        total += m.price * cart[id];
-      }
-    }
-    
-    const confirmOrderBtn = document.getElementById("confirmOrderBtn");
-    confirmOrderBtn.disabled = true;
-    confirmOrderBtn.innerText = "Mengirim...";
-    
-    try {
-      await db.ref("orders").push({
-        items: items,
-        total: total,
-        timestamp: firebase.database.ServerValue.TIMESTAMP
-      });
-      document.getElementById("cartModal").classList.remove("show");
-      document.getElementById("successScreen").classList.add("show");
-      document.getElementById("successTotal").innerText = `Total: Rp ${total.toLocaleString("id-ID")}`;
-      document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=WarkopBrmano_Kasir_Bayar_${total}`;
-    } catch (err) {
-      alert("Gagal mengirim pesanan!");
-      confirmOrderBtn.disabled = false;
-      confirmOrderBtn.innerText = "Kirim ke Dapur";
-    }
-  });
-
-  document.getElementById("newOrderBtn").addEventListener("click", () => {
-    for (const k in cart) delete cart[k];
-    renderMenu(); 
-    updateCartBar();
-    document.getElementById("successScreen").classList.remove("show");
-    document.getElementById("confirmOrderBtn").disabled = false;
-    document.getElementById("confirmOrderBtn").innerText = "Kirim ke Dapur";
-  });
-
-  renderMenu();
-</script>
-</body>
-</html>
