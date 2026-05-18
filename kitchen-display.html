@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,19 +17,22 @@
   .time { font-size: 13px; color: #cbd5e1; font-weight: bold;}
   .total-price { font-size: 14px; color: #4ade80; font-weight: bold; }
   
+  /* Desain Info Pelanggan */
+  .customer-info { background: #0f172a; padding: 10px 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #334155; }
+  .customer-info p { margin: 0 0 4px 0; font-size: 14px; color: #cbd5e1; }
+  .customer-info strong { color: #fff; font-size: 15px;}
+  
   .item-list { list-style: none; padding: 0; margin: 0 0 15px 0; }
   .item-list li { font-size: 18px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; }
   .qty { font-weight: bold; color: #121212; background: #f97316; padding: 2px 8px; border-radius: 6px; font-size: 16px; }
   .item-name { flex: 1; line-height: 1.3;}
   
-  /* Desain Catatan Spesial */
   .order-notes { background: rgba(234, 179, 8, 0.15); border-left: 4px solid #eab308; color: #fde047; padding: 12px; border-radius: 6px; font-size: 14px; margin-bottom: 20px; font-style: italic;}
-  
   .complete-btn { width: 100%; padding: 14px; background: #22c55e; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
   
   .summary-card { background: #1e293b; border-radius: 14px; padding: 24px; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.4); overflow-x: auto;}
   .summary-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 2px solid #334155; padding-bottom: 12px; flex-wrap: wrap; gap: 10px;}
-  .summary-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; min-width: 600px;}
+  .summary-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; min-width: 700px;}
   .summary-table th, .summary-table td { text-align: left; padding: 12px; border-bottom: 1px solid #334155; font-size: 14px;}
   .summary-table th { color: #f97316; font-weight: 600; }
   .export-btn { background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; }
@@ -41,13 +44,13 @@
 <header>
   <div>
     <h1>Kitchen Display System</h1>
-    <div style="color: #cbd5e1; font-size: 14px; margin-top: 4px;">Live Orders & Rekap Harian - Warkop Brmano</div>
+    <div style="color: #cbd5e1; font-size: 14px; margin-top: 4px;">Live Orders & Database Pelanggan - Warkop Brmano</div>
   </div>
 </header>
 
 <div class="layout-container">
   <div>
-    <h2 style="font-size: 18px; color: #f97316; margin-bottom: 14px;">🎯 Pesanan Aktif (Belum Selesai)</h2>
+    <h2 style="font-size: 18px; color: #f97316; margin-bottom: 14px;">🎯 Pesanan Aktif</h2>
     <div class="order-grid" id="orderGrid">
       <div class="empty-state">Menunggu pesanan masuk...</div>
     </div>
@@ -55,25 +58,26 @@
 
   <div class="summary-card">
     <div class="summary-header">
-      <h2 style="font-size: 18px; margin: 0; color: #4ade80;">📈 Rekap Pesanan Hari Ini</h2>
-      <button class="export-btn" onclick="exportToExcel()">📊 Export Data ke Excel</button>
+      <h2 style="font-size: 18px; margin: 0; color: #4ade80;">📈 Database Pesanan Hari Ini</h2>
+      <button class="export-btn" onclick="exportToExcel()">📊 Export Data (.csv)</button>
     </div>
     <table class="summary-table">
       <thead>
         <tr>
           <th style="width: 50px;">No.</th>
           <th style="width: 100px;">Waktu</th>
+          <th style="width: 150px;">Pelanggan</th>
           <th>Rincian Pesanan</th>
-          <th style="width: 150px;">Total Harga</th>
+          <th style="width: 120px;">Total</th>
         </tr>
       </thead>
       <tbody id="summaryBody">
         <tr>
-          <td colspan="4" class="empty-state">Belum ada pesanan yang diselesaikan hari ini.</td>
+          <td colspan="5" class="empty-state">Belum ada pesanan yang diselesaikan.</td>
         </tr>
       </tbody>
     </table>
-    <h3 style="text-align: right; font-size: 18px; color: #4ade80;" id="grandTotalText">Total Omset Harian: Rp 0</h3>
+    <h3 style="text-align: right; font-size: 18px; color: #4ade80;" id="grandTotalText">Total Omset: Rp 0</h3>
   </div>
 </div>
 
@@ -113,6 +117,9 @@
       const key = childSnapshot.key;
       const order = childSnapshot.val();
       
+      const cName = order.customerName || "Tanpa Nama";
+      const cWA = order.customerWA || "-";
+
       let itemsHTML = "";
       if (order.items) {
         order.items.forEach(item => {
@@ -122,13 +129,13 @@
 
       let notesHTML = "";
       if (order.notes && order.notes.trim() !== "") {
-        notesHTML = `<div class="order-notes">📌 Catatan Pelanggan: <br/>${order.notes}</div>`;
+        notesHTML = `<div class="order-notes">📌 Catatan: ${order.notes}</div>`;
       }
 
       let dateTimeString = "Baru saja";
       if (order.timestamp) {
         const oDate = new Date(order.timestamp);
-        dateTimeString = oDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short'}) + " - " + oDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        dateTimeString = oDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
       }
       
       const totalPrice = order.total ? `Rp ${order.total.toLocaleString("id-ID")}` : "";
@@ -139,16 +146,20 @@
             <span class="time">🕒 ${dateTimeString}</span>
             <span class="total-price">${totalPrice}</span>
           </div>
+          <div class="customer-info">
+            <p>👤 <strong>${cName}</strong></p>
+            <p>📞 ${cWA}</p>
+          </div>
           <ul class="item-list">${itemsHTML}</ul>
           ${notesHTML}
-          <button class="complete-btn" onclick="completeOrder('${key}')">Selesai & Masukkan ke Rekap</button>
+          <button class="complete-btn" onclick="completeOrder('${key}')">Selesai & Rekap</button>
         </div>
       `;
     });
   });
 
   window.completeOrder = function(key) {
-    if(confirm("Pesanan ini sudah selesai? Order akan masuk ke rekap hari ini.")) {
+    if(confirm("Pesanan ini sudah selesai?")) {
       db.ref("orders/" + key).once("value", (snapshot) => {
         if(snapshot.exists()) {
           const orderData = snapshot.val();
@@ -167,13 +178,15 @@
     let orderNumber = 1;
 
     if (!snapshot.exists()) {
-      summaryBody.innerHTML = '<tr><td colspan="4" class="empty-state">Belum ada pesanan selesai hari ini.</td></tr>';
-      grandTotalText.innerText = "Total Omset Hari Ini: Rp 0";
+      summaryBody.innerHTML = '<tr><td colspan="5" class="empty-state">Belum ada pesanan selesai hari ini.</td></tr>';
+      grandTotalText.innerText = "Total Omset: Rp 0";
       return;
     }
 
     snapshot.forEach((childSnapshot) => {
       const order = childSnapshot.val();
+      const cName = order.customerName || "Tanpa Nama";
+      const cWA = order.customerWA || "-";
       
       let detailItems = [];
       if (order.items) {
@@ -192,13 +205,14 @@
       currentGrandTotal += totalHarga;
 
       completedOrdersList.push({
-        no: orderNumber, waktu: timeString, rincian: detailString, total: totalHarga
+        no: orderNumber, waktu: timeString, nama: cName, wa: cWA, rincian: detailString, total: totalHarga
       });
 
       summaryBody.innerHTML += `
         <tr>
           <td><strong>#${orderNumber}</strong></td>
           <td>${timeString}</td>
+          <td><strong>${cName}</strong><br><span style="font-size:12px;color:#94a3b8;">${cWA}</span></td>
           <td>${detailString}</td>
           <td style="color: #4ade80; font-weight: bold;">Rp ${totalHarga.toLocaleString("id-ID")}</td>
         </tr>
@@ -206,28 +220,28 @@
       orderNumber++;
     });
 
-    grandTotalText.innerText = `Total Omset Hari Ini: Rp ${currentGrandTotal.toLocaleString("id-ID")}`;
+    grandTotalText.innerText = `Total Omset: Rp ${currentGrandTotal.toLocaleString("id-ID")}`;
   });
 
   window.exportToExcel = function() {
-    if (completedOrdersList.length === 0) { alert("Tidak ada data pesanan hari ini untuk di-export!"); return; }
+    if (completedOrdersList.length === 0) { alert("Tidak ada data untuk di-export!"); return; }
 
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "REKAP PESANAN WARKOP BRMANO\n";
+    csvContent += "DATABASE PELANGGAN & PESANAN WARKOP BRMANO\n";
     csvContent += `Tanggal: ${todayStr}\n\n`;
-    csvContent += "No. Order,Waktu,Rincian Pesanan,Total Harga\n";
+    csvContent += "No. Order,Waktu,Nama Pelanggan,No. WhatsApp,Rincian Pesanan,Total Harga\n";
 
     completedOrdersList.forEach(order => {
       let amanRincian = `"${order.rincian}"`; 
-      csvContent += `${order.no},${order.waktu},${amanRincian},${order.total}\n`;
+      csvContent += `${order.no},${order.waktu},"${order.nama}","${order.wa}",${amanRincian},${order.total}\n`;
     });
     
-    csvContent += `\n,,,TOTAL OMSET HARIAN,${currentGrandTotal}\n`;
+    csvContent += `\n,,,,,TOTAL OMSET HARIAN,${currentGrandTotal}\n`;
 
     const encodedUri = encodeURI(csvContent);
     const downloadAnchor = document.createElement("a");
     downloadAnchor.setAttribute("href", encodedUri);
-    downloadAnchor.setAttribute("download", `Data_Order_WarkopBrmano_${todayStr}.csv`);
+    downloadAnchor.setAttribute("download", `Database_WarkopBrmano_${todayStr}.csv`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     document.body.removeChild(downloadAnchor);
