@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
 <title>Warkop Brmano - Pesan Sekarang</title>
+<meta name="description" content="Pesan menu favoritmu langsung dari meja di Warkop Brmano. Cepat, mudah, dan fresh!" />
+<meta property="og:title" content="Warkop Brmano" />
+<meta property="og:description" content="Menu digital Warkop Brmano. Pesan langsung dari meja Anda!" />
+<meta property="og:type" content="website" />
+
 <style>
   :root {
     --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --muted: #64748b;
@@ -19,7 +25,6 @@
   header h1 { font-size: 22px; font-weight: 700; color: var(--text); }
   header p { font-size: 13px; color: var(--muted); margin-top: 2px; }
 
-  /* Scrollable Tabs */
   .categories-tabs { display: flex; background: var(--card); padding: 6px; margin: 16px; border-radius: 12px; border: 1px solid var(--border); position: sticky; top: 0; z-index: 10; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
   .categories-tabs::-webkit-scrollbar { display: none; }
   .tab-btn { flex: 0 0 auto; padding: 10px 16px; border: none; background: transparent; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; border-radius: 8px; transition: all 0.2s ease; }
@@ -30,11 +35,8 @@
   .menu-category-section.active { display: flex; }
 
   .item { background: var(--card); border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); }
-  
-  /* Desain Kotak Gambar - Di background putih bersih */
-  .item-img-box { width: 90px; height: 90px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: #fff; border: 1px solid #f1f5f9; padding: 4px; display: flex; align-items: center; justify-content: center;}
-  .item-img-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px;}
-  
+  .item-img-box { width: 85px; height: 85px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #fff; border: 1px solid #f1f5f9;}
+  .item-img-box img { width: 100%; height: 100%; object-fit: cover; }
   .item-info { flex: 1; min-width: 0; }
   .item-name { font-weight: 600; font-size: 15px; color: #0f172a; margin-bottom: 2px; }
   .item-desc { font-size: 12px; color: var(--muted); line-height: 1.3; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -54,7 +56,6 @@
   .close-btn { background: none; border: none; font-size: 16px; color: var(--accent-dark); cursor: pointer; font-weight: bold;}
   .modal-content { padding: 16px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 12px; }
   
-  /* Kotak Catatan (Notes) */
   .notes-box { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; resize: none; margin-top: 10px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);}
   .notes-box:focus { outline: none; border-color: var(--accent); }
 
@@ -141,22 +142,22 @@
     </div>
 
     <div id="qrisSection">
-      <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Screenshot QR ini dan bayar menggunakan aplikasi pilihan kamu.</p>
+      <p style="font-size: 14px; color: var(--text); margin-bottom: 12px;"><b>Screenshot QR ini</b> dan bayar menggunakan aplikasi pilihan kamu.</p>
       <img src="qris.jpg" alt="QRIS Warkop Brmano" class="qris-img" onerror="this.src='https://placehold.co/240x240/e2e8f0/64748b?text=Upload+qris.jpg+di+GitHub'">
       <div class="payment-logos">
         <span>Gopay</span><span>OVO</span><span>DANA</span><span>ShopeePay</span><span>M-BCA</span>
       </div>
-      <p style="font-size: 12px; color: var(--success); font-weight: 600; margin-top: 16px;">Tunjukkan bukti transfer ke Pelayan kami.</p>
+      <p style="font-size: 12px; color: var(--success); font-weight: 600; margin-top: 16px;">Tunjukkan bukti bayar ke Kasir.</p>
     </div>
 
     <div id="cashSection" style="display: none; padding: 20px 0;">
       <div style="font-size: 40px; margin-bottom: 10px;">💵</div>
-      <p style="color: #0f172a; font-weight: 600; font-size: 18px;">Hampiri Kasir</p>
-      <p style="font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.5;">Silahkan hampiri kasir dan sebutkan pesanan kamu untuk melakukan pembayaran secara tunai.</p>
+      <p style="color: #0f172a; font-weight: 600; font-size: 18px;">Bayar Tunai</p>
+      <p style="font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.5;">Hampiri kasir dan sebutkan pesanan kamu untuk membayar.</p>
     </div>
   </div>
 
-  <button class="new-order-btn" id="newOrderBtn">Tutup & Buat Pesanan Baru</button>
+  <button class="new-order-btn" id="newOrderBtn">Selesai & Buat Pesanan Baru</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -176,54 +177,48 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  // DAFTAR MENU LENGKAP (26 ITEM) DENGAN FOTO LOKAL GITHUB
   const MENU = [
-    // MAKANAN KHAS MANADO (Tab makanan)
-    { id: "M01", category: "makanan", name: "Tinutuan (Bubur Manado)", desc: "Bubur sayur khas Manado: labu kuning, jagung, bayam, kangkung, kemangi — disajikan dengan ikan asin dan sambal roa.", price: 28000, img: "tinutuan.jpg" },
-    { id: "M02", category: "makanan", name: "Nasi Kuning Cakalang", desc: "Nasi kuning pulen dengan suwiran cakalang fufu pedas, telur, mie goreng, dan sambal dabudabu.", price: 35000, img: "nasikuning.jpg" },
-    { id: "M03", category: "makanan", name: "Mie Cakalang Pedas", desc: "Mie kuning bumbu rica dengan cakalang fufu suwir, kemangi, dan irisan cabe rawit segar.", price: 32000, img: "miecakalang.jpg" },
-    { id: "M04", category: "makanan", name: "Nasi Bakar Rica", desc: "Nasi bumbu rica-rica dibungkus daun pisang lalu dibakar, gurih dan harum aroma daun.", price: 35000, img: "nasibakar.jpg" },
-    { id: "M05", category: "makanan", name: "Ayam Rica-Rica", desc: "Potongan ayam dimasak dengan bumbu rica khas Manado pedas menggigit. Disajikan dengan nasi putih.", price: 42000, img: "ayamrica.jpg" },
-    { id: "M06", category: "makanan", name: "Ikan Cakalang Fufu Sambal Dabu-Dabu", desc: "Ikan cakalang asap khas Manado disuwir, disiram sambal dabu-dabu tomat segar. Disajikan dengan nasi putih.", price: 45000, img: "cakalangfufu.jpg" },
-    { id: "M07", category: "makanan", name: "Nasi Komplit Manado", desc: "Paket lengkap: nasi, ayam rica, perkedel jagung, sambal roa, dan sayur bunga pepaya tumis.", price: 40000, img: "nasikomplit.jpg" },
+    { id: "M01", category: "makanan", name: "Tinutuan (Bubur Manado)", desc: "Bubur sayur labu, jagung, bayam, kemangi dengan ikan asin & sambal roa.", price: 28000, img: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=200&h=200&fit=crop" },
+    { id: "M02", category: "makanan", name: "Nasi Kuning Cakalang", desc: "Nasi pulen dengan suwiran cakalang fufu pedas, telur, mie goreng & dabu-dabu.", price: 35000, img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200&h=200&fit=crop" },
+    { id: "M03", category: "makanan", name: "Mie Cakalang Pedas", desc: "Mie kuning bumbu rica dengan cakalang fufu suwir dan irisan rawit segar.", price: 32000, img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=200&h=200&fit=crop" },
+    { id: "M04", category: "makanan", name: "Nasi Bakar Rica", desc: "Nasi bumbu rica dibungkus daun pisang lalu dibakar, gurih dan harum.", price: 35000, img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=200&fit=crop" },
+    { id: "M05", category: "makanan", name: "Ayam Rica-Rica (+Nasi)", desc: "Potongan ayam bumbu rica khas Manado pedas menggigit dengan nasi putih.", price: 42000, img: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=200&h=200&fit=crop" },
+    { id: "M06", category: "makanan", name: "Ikan Cakalang Fufu Dabu-Dabu (+Nasi)", desc: "Cakalang asap disuwir, disiram sambal dabu-dabu segar dengan nasi putih.", price: 45000, img: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=200&h=200&fit=crop" },
+    { id: "M07", category: "makanan", name: "Nasi Komplit Manado", desc: "Nasi, ayam rica, perkedel jagung, sambal roa, dan sayur bunga pepaya tumis.", price: 40000, img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" },
     
-    // CEMILAN & GORENGAN (Tab cemilan)
-    { id: "C01", category: "cemilan", name: "Panada Isi Cakalang", desc: "Roti goreng khas Manado berisi cakalang pedas bumbu rica. Isi 2 pcs per porsi.", price: 15000, img: "panada.jpg" },
-    { id: "C02", category: "cemilan", name: "Pisang Goroho Goreng", desc: "Pisang goroho khas Sulut digoreng renyah, disajikan dengan sambal roa pedas.", price: 20000, img: "pisanggoroho.jpg" },
-    { id: "C03", category: "cemilan", name: "Lalampa", desc: "Ketan isi cakalang pedas dibungkus daun pisang lalu dibakar.", price: 18000, img: "lalampa.jpg" },
-    { id: "C04", category: "cemilan", name: "Klappertaart", desc: "Dessert khas Manado: kelapa muda, susu, dan kuning telur dipanggang lembut. Disajikan dingin.", price: 25000, img: "klappertaart.jpg" },
-    { id: "C05", category: "cemilan", name: "Pisang Goreng Sambal Roa", desc: "Pisang kepok goreng tepung crispy, dicocol sambal roa khas — manis-pedas-gurih.", price: 22000, img: "pisanggoreng.jpg" },
-    { id: "C06", category: "cemilan", name: "Onde-Onde Wijen", desc: "Bola ketan isi kacang hijau berbalut wijen, digoreng hangat. Isi 4 pcs per porsi.", price: 15000, img: "ondeonde.jpg" },
+    { id: "C01", category: "cemilan", name: "Panada Isi Cakalang", desc: "Roti goreng khas Manado isi cakalang bumbu rica pedas (Isi 2 pcs).", price: 15000, img: "https://images.unsplash.com/photo-1604634077374-df6110f01ce7?w=200&h=200&fit=crop" },
+    { id: "C02", category: "cemilan", name: "Pisang Goroho Goreng", desc: "Pisang goroho renyah khas Sulut disajikan dengan sambal roa pedas.", price: 20000, img: "https://images.unsplash.com/photo-1582294440049-338c35b5ceb4?w=200&h=200&fit=crop" },
+    { id: "C03", category: "cemilan", name: "Lalampa", desc: "Ketan isi cakalang pedas dibungkus daun pisang lalu dibakar.", price: 18000, img: "https://images.unsplash.com/photo-1625938144755-652e08e359b7?w=200&h=200&fit=crop" },
+    { id: "C04", category: "cemilan", name: "Klappertaart", desc: "Dessert dingin panggang dari kelapa muda, susu, dan kuning telur.", price: 25000, img: "https://images.unsplash.com/photo-1579954115545-a95edc502b74?w=200&h=200&fit=crop" },
+    { id: "C05", category: "cemilan", name: "Pisang Goreng Sambal Roa", desc: "Pisang kepok goreng crispy dicocol sambal roa manis-pedas-gurih.", price: 22000, img: "https://images.unsplash.com/photo-1528825871115-3581a5387919?w=200&h=200&fit=crop" },
+    { id: "C06", category: "cemilan", name: "Onde-Onde Wijen", desc: "Bola ketan isi kacang hijau berbalut wijen hangat (Isi 4 pcs).", price: 15000, img: "https://images.unsplash.com/photo-1630175860333-5161ae38ee0d?w=200&h=200&fit=crop" },
 
-    // MINUMAN DINGIN & SIGNATURE (Tab minuman_dingin)
-    { id: "D01", category: "minuman_dingin", name: "Es Kopi Susu Gula Aren", desc: "Espresso, susu segar, dan sirup gula aren asli — favorit nomor satu pelanggan.", price: 25000, img: "eskopsusaren.jpg" },
-    { id: "D02", category: "minuman_dingin", name: "Es Kopi Klappertaart [SIGNATURE]", desc: "Perpaduan kopi susu dingin dengan saus klappertaart lembut dan taburan kayu manis khas Manado.", price: 32000, img: "eskopiklappertaart.jpg" },
-    { id: "D03", category: "minuman_dingin", name: "Es Kopi Pala", desc: "Kopi susu dingin dengan sirup pala asli Sangihe, aroma rempahnya segar dan unik.", price: 28000, img: "eskopipala.jpg" },
-    { id: "D04", category: "minuman_dingin", name: "Es Kopi Pisang Goroho", desc: "Kopi susu dipadu puree pisang goroho khas Sulut, creamy dan sedikit gurih.", price: 30000, img: "eskopipisang.jpg" },
-    { id: "D05", category: "minuman_dingin", name: "Iced Americano", desc: "Double shot espresso dengan es batu dan air dingin.", price: 25000, img: "icedamericano.jpg" },
-    { id: "D06", category: "minuman_dingin", name: "Es Cokelat Manado", desc: "Cokelat lokal Minahasa diolah dengan susu segar, manisnya lembut.", price: 24000, img: "escokelat.jpg" },
+    { id: "D01", category: "minuman_dingin", name: "Es Kopi Susu Gula Aren", desc: "Espresso, susu segar, dan sirup aren asli. Favorit pelanggan.", price: 25000, img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&h=200&fit=crop" },
+    { id: "D02", category: "minuman_dingin", name: "Es Kopi Klappertaart [SIGNATURE]", desc: "Kopi susu dingin dengan saus klappertaart lembut & taburan kayu manis.", price: 32000, img: "https://images.unsplash.com/photo-1557006021-b85faa2bc5e2?w=200&h=200&fit=crop" },
+    { id: "D03", category: "minuman_dingin", name: "Es Kopi Pala", desc: "Kopi susu dengan sirup pala asli Sangihe. Aroma rempah unik segar.", price: 28000, img: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=200&h=200&fit=crop" },
+    { id: "D04", category: "minuman_dingin", name: "Es Kopi Pisang Goroho", desc: "Kopi susu dipadu puree pisang goroho, creamy dan sedikit gurih.", price: 30000, img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=200&h=200&fit=crop" },
+    { id: "D05", category: "minuman_dingin", name: "Iced Americano", desc: "Double shot espresso dengan es batu dingin. Pahit bersih.", price: 25000, img: "https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=200&h=200&fit=crop" },
+    { id: "D06", category: "minuman_dingin", name: "Es Cokelat Manado", desc: "Cokelat lokal Minahasa dengan susu segar manis yang lembut.", price: 24000, img: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&h=200&fit=crop" },
 
-    // KOPI & MINUMAN PANAS (Tab minuman_panas)
-    { id: "P01", category: "minuman_panas", name: "Kopi Tubruk Manado", desc: "Kopi robusta lokal Minahasa diseduh tubruk klasik, disajikan panas.", price: 18000, img: "kopitubruk.jpg" },
-    { id: "P02", category: "minuman_panas", name: "Kopi Susu Klasik", desc: "Espresso single shot dipadu susu segar hangat.", price: 22000, img: "kopisusuklasik.jpg" },
-    { id: "P03", category: "minuman_panas", name: "Kopi Rempah Khas Manado", desc: "Kopi robusta dengan campuran kayu manis, cengkeh, dan pala.", price: 25000, img: "kopirempah.jpg" },
-    { id: "P04", category: "minuman_panas", name: "Cappuccino", desc: "Espresso panas dengan susu steam dan microfoam tebal.", price: 28000, img: "cappuccino.jpg" },
-    { id: "P05", category: "minuman_panas", name: "Saraba", desc: "Minuman tradisional jahe merah, gula aren, dan santan ringan khas Sulawesi.", price: 20000, img: "saraba.jpg" },
-    { id: "P06", category: "minuman_panas", name: "Teh Tarik", desc: "Teh hitam pekat ditarik dengan susu kental manis.", price: 18000, img: "tehtarik.jpg" }
+    { id: "P01", category: "minuman_panas", name: "Kopi Tubruk Manado", desc: "Kopi robusta Minahasa tubruk klasik beraroma pegunungan.", price: 18000, img: "https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=200&h=200&fit=crop" },
+    { id: "P02", category: "minuman_panas", name: "Kopi Susu Klasik", desc: "Espresso single shot dengan susu hangat manis pas.", price: 22000, img: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&h=200&fit=crop" },
+    { id: "P03", category: "minuman_panas", name: "Kopi Rempah Khas Manado", desc: "Robusta hangat dengan kayu manis, cengkeh, dan pala.", price: 25000, img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&h=200&fit=crop" },
+    { id: "P04", category: "minuman_panas", name: "Cappuccino", desc: "Espresso panas dengan susu steam dan microfoam tebal.", price: 28000, img: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&h=200&fit=crop" },
+    { id: "P05", category: "minuman_panas", name: "Saraba", desc: "Minuman jahe merah, aren, dan santan ringan khas Sulawesi.", price: 20000, img: "https://images.unsplash.com/photo-1595434091143-b375cef588f7?w=200&h=200&fit=crop" },
+    { id: "P06", category: "minuman_panas", name: "Teh Tarik", desc: "Teh hitam ditarik dengan susu kental manis sampai berbusa.", price: 18000, img: "https://images.unsplash.com/photo-1561336313-0bd5e0b27ec8?w=200&h=200&fit=crop" }
   ];
 
   const cart = {};
 
-  // Render Menu sesuai Kategori
   function renderMenu() {
-    const sections = ['makanan', 'cemilan', 'minuman_dingin', 'minuman_panas'];
-    sections.forEach(sec => document.getElementById(`sec-${sec}`).innerHTML = "");
+    const categories = ['makanan', 'cemilan', 'minuman_dingin', 'minuman_panas'];
+    categories.forEach(cat => document.getElementById(`sec-${cat}`).innerHTML = "");
 
     MENU.forEach(item => {
       const qty = cart[item.id] || 0;
       document.getElementById(`sec-${item.category}`).innerHTML += `
         <div class="item">
-          <div class="item-img-box"><img src="${item.img}" alt="${item.name}" onerror="this.src='https://placehold.co/90x90/e2e8f0/64748b?text=${item.id}'"></div>
+          <div class="item-img-box"><img src="${item.img}" alt="${item.name}"></div>
           <div class="item-info">
             <div class="item-name">${item.name}</div>
             <div class="item-desc">${item.desc}</div>
@@ -238,7 +233,6 @@
     });
   }
 
-  // Navigasi Tab Kategori
   function switchCategory(catName) {
     document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
     document.querySelectorAll(".menu-category-section").forEach(sec => sec.classList.remove("active"));
@@ -246,7 +240,6 @@
     document.getElementById(`sec-${catName}`).classList.add("active");
   }
 
-  // Render Item di Modal Review
   function renderCartModal() {
     const cartItemsEl = document.getElementById("cartItems");
     cartItemsEl.innerHTML = "";
@@ -255,6 +248,108 @@
       if (qty > 0) {
         cartItemsEl.innerHTML += `
           <div class="item">
-            <div class="item-img-box" style="width:60px; height:60px;"><img src="${item.img}" onerror="this.src='https://placehold.co/60x60/e2e8f0/64748b?text=${item.id}'"></div>
+            <div class="item-img-box" style="width:60px; height:60px;"><img src="${item.img}"></div>
             <div class="item-info">
-              <div class="item-name" style="font-size:14px;">${item.name}http://googleusercontent.com/image_generation_content/0
+              <div class="item-name" style="font-size:14px;">${item.name}</div>
+              <div class="item-price">Rp ${(item.price * qty).toLocaleString("id-ID")}</div>
+            </div>
+            <div class="qty-controls" data-id="${item.id}">
+              <button class="qty-btn" data-action="dec">−</button>
+              <span class="qty-num">${qty}</span>
+              <button class="qty-btn" data-action="inc">+</button>
+            </div>
+          </div>
+        `;
+      }
+    });
+  }
+
+  function updateCartBar() {
+    let count = 0, amount = 0;
+    for (const id in cart) {
+      const item = MENU.find(m => m.id === id);
+      if (cart[id] > 0) { count += cart[id]; amount += cart[id] * item.price; }
+    }
+    document.getElementById("cartCount").innerText = `${count} item`;
+    document.getElementById("cartTotal").innerText = `Rp ${amount.toLocaleString("id-ID")}`;
+    document.getElementById("cartBar").style.display = count > 0 ? "flex" : "none";
+    if (count === 0) document.getElementById("cartModal").classList.remove("show");
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+    const id = btn.closest(".qty-controls").dataset.id;
+    if (btn.dataset.action === "inc") { cart[id] = (cart[id] || 0) + 1; }
+    if (btn.dataset.action === "dec") { cart[id] = Math.max(0, cart[id] - 1); }
+    if (cart[id] === 0) delete cart[id];
+    renderMenu(); updateCartBar();
+    if (document.getElementById("cartModal").classList.contains("show")) renderCartModal();
+  });
+
+  document.getElementById("viewCartBtn").addEventListener("click", () => {
+    renderCartModal(); document.getElementById("cartModal").classList.add("show");
+  });
+  document.getElementById("closeCartBtn").addEventListener("click", () => {
+    document.getElementById("cartModal").classList.remove("show");
+  });
+
+  function switchPayment(type) {
+    document.getElementById("btnQris").classList.remove("active");
+    document.getElementById("btnCash").classList.remove("active");
+    document.getElementById("qrisSection").style.display = "none";
+    document.getElementById("cashSection").style.display = "none";
+
+    if(type === 'qris') {
+      document.getElementById("btnQris").classList.add("active");
+      document.getElementById("qrisSection").style.display = "block";
+    } else {
+      document.getElementById("btnCash").classList.add("active");
+      document.getElementById("cashSection").style.display = "block";
+    }
+  }
+
+  document.getElementById("confirmOrderBtn").addEventListener("click", async () => {
+    let total = 0; const items = [];
+    for (const id in cart) {
+      if (cart[id] > 0) {
+        const m = MENU.find(x => x.id === id);
+        items.push({ name: m.name, qty: cart[id], price: m.price });
+        total += m.price * cart[id];
+      }
+    }
+    
+    const notesValue = document.getElementById("orderNotes").value.trim();
+    const confirmOrderBtn = document.getElementById("confirmOrderBtn");
+    confirmOrderBtn.disabled = true; confirmOrderBtn.innerText = "Memproses...";
+    
+    try {
+      await db.ref("orders").push({
+        items: items,
+        total: total,
+        notes: notesValue,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      });
+      document.getElementById("cartModal").classList.remove("show");
+      document.getElementById("successScreen").classList.add("show");
+      document.getElementById("successTotal").innerText = `Rp ${total.toLocaleString("id-ID")}`;
+    } catch (err) {
+      alert("Gagal memproses pesanan!");
+      confirmOrderBtn.disabled = false; confirmOrderBtn.innerText = "Bayar Sekarang";
+    }
+  });
+
+  document.getElementById("newOrderBtn").addEventListener("click", () => {
+    for (const k in cart) delete cart[k];
+    document.getElementById("orderNotes").value = "";
+    renderMenu(); updateCartBar();
+    document.getElementById("successScreen").classList.remove("show");
+    document.getElementById("confirmOrderBtn").disabled = false;
+    document.getElementById("confirmOrderBtn").innerText = "Bayar Sekarang";
+    switchPayment('qris'); 
+  });
+
+  renderMenu();
+</script>
+</body>
+</html>
