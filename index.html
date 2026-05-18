@@ -10,7 +10,7 @@
     --card: #ffffff;
     --text: #1e293b;
     --muted: #64748b;
-    --accent: #f97316; /* Warkop Orange */
+    --accent: #f97316;
     --accent-dark: #ea580c;
     --accent-soft: #ffedd5;
     --success: #22c55e;
@@ -27,21 +27,27 @@
     padding-bottom: 120px;
   }
   
-  /* Header & Logo */
+  /* Header & Logo Bulat Sempurna */
   header { 
     padding: 24px 20px 16px; 
     text-align: center; 
     background: var(--card);
     border-bottom: 1px solid var(--border); 
   }
+  .logo-container {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25);
+    overflow: hidden;
+    background: #f1f5f9;
+  }
   .logo-img { 
-    width: 84px; 
-    height: 84px; 
-    border-radius: 50%; 
-    object-fit: cover; 
-    margin-bottom: 10px; 
-    border: 3px solid var(--accent); 
-    box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   header h1 { font-size: 22px; font-weight: 700; color: var(--text); }
   header p { font-size: 13px; color: var(--muted); margin-top: 2px; }
@@ -76,7 +82,7 @@
     box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2);
   }
 
-  /* Menu Layout */
+  /* Menu Layout ala Gambar */
   .menu-container { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
   .menu-category-section { display: none; flex-direction: column; gap: 12px; }
   .menu-category-section.active { display: flex; }
@@ -84,7 +90,7 @@
   .item { 
     background: var(--card); 
     border-radius: 14px; 
-    padding: 14px; 
+    padding: 12px; 
     display: flex; 
     align-items: center; 
     gap: 14px;
@@ -92,15 +98,17 @@
     box-shadow: var(--shadow);
   }
   .item-img-box {
-    width: 64px;
-    height: 64px;
-    background: var(--accent-soft);
+    width: 80px;
+    height: 80px;
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
+    overflow: hidden;
     flex-shrink: 0;
+    background: #f1f5f9;
+  }
+  .item-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .item-info { flex: 1; min-width: 0; }
   .item-name { font-weight: 600; font-size: 15px; color: #0f172a; margin-bottom: 2px; }
@@ -121,7 +129,7 @@
   .modal { display: none; position: fixed; inset: 0; background: #f8fafc; z-index: 50; flex-direction: column; }
   .modal.show { display: flex; }
   .modal-header { padding: 20px; background: white; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .close-btn { background: none; border: none; font-size: 20px; color: var(--text); cursor: pointer; font-weight: bold;}
+  .close-btn { background: none; border: none; font-size: 16px; color: var(--accent-dark); cursor: pointer; font-weight: bold;}
   .modal-content { padding: 16px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 12px; }
   .confirm-btn { background: var(--success); color: white; width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; margin-top: auto; cursor: pointer; box-shadow: 0 6px 18px rgba(34, 197, 94, 0.3); }
   
@@ -136,7 +144,9 @@
 <body>
 
 <header>
-  <img src="logo.jpg" alt="Warkop Brmano Logo" class="logo-img" onerror="this.style.display='none'">
+  <div class="logo-container">
+    <img src="logo.jpg" alt="Warkop Brmano Logo" class="logo-img">
+  </div>
   <h1>Warkop Brmano</h1>
   <p>Pesan langsung dari meja Anda • Fresh & Cepat</p>
 </header>
@@ -198,18 +208,19 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
+  // FOTO MENU REALISTIS DARI UNSPLASH
   const MENU = [
-    { id: "W01", category: "cemilan", name: "Bubur Kacang Hijau (Burjo)", desc: "Bubur kacang hijau manis legit berpadu santan gurih melimpah.", price: 12000, emoji: "🥣" },
-    { id: "W02", category: "cemilan", name: "Burjo Ketan Hitam", desc: "Perpaduan pas burjo spesial dengan tempat ketan hitam yang lembut.", price: 13000, emoji: "🍨" },
-    { id: "W03", category: "makanan", name: "Indomie Goreng Original", desc: "Mie goreng favorit sejuta umat disajikan hangat dengan bumbu pas khas warkop.", price: 10000, emoji: "🍳" },
-    { id: "W04", category: "makanan", name: "Indomie Goreng Telur", desc: "Indomie goreng legendaris dengan tambahan telur mata sapi/dadar di atasnya.", price: 14000, emoji: "🍝" },
-    { id: "W05", category: "makanan", name: "Indomie Rebus Soto Telur", desc: "Mie kuah rasa soto segar disajikan lengkap dengan telur rebus matang/setengah matang.", price: 14000, emoji: "🍜" },
-    { id: "W06", category: "cemilan", name: "Roti Bakar Coklat Keju", desc: "Roti bakar renyah di luar, lembut di dalam dengan taburan coklat meses dan keju tebal.", price: 15000, emoji: "🍞" },
-    { id: "W07", category: "cemilan", name: "Pisang Bakar Coklat Keju", desc: "Pisang pilihan yang dibakar manis garing dipadu susu kental manis, coklat, dan parutan keju.", price: 15000, emoji: "🍌" },
-    { id: "W08", category: "minuman", name: "Es Kopi Susu Aren", desc: "Es kopi espresso racikan warkop dengan susu segar murni dan manisnya gula aren asli.", price: 18000, emoji: "☕" },
-    { id: "W09", category: "minuman", name: "Es Kopi Hitam / Americano", desc: "Kopi hitam robusta murni pilihan, cocok untuk penambah semangat (bisa req gula).", price: 15000, emoji: "🥤" },
-    { id: "W10", category: "minuman", name: "Es Teh Manis", desc: "Es teh manis segar pelepas dahaga dari seduhan teh berkualitas.", price: 6000, emoji: "🍹" },
-    { id: "W11", category: "minuman", name: "Es Jeruk Peras", desc: "Es jeruk peras murni asli dari buah segar, asam manisnya seimbang berenergi.", price: 12000, emoji: "🍊" }
+    { id: "W01", category: "cemilan", name: "Bubur Kacang Hijau (Burjo)", desc: "Bubur kacang hijau manis legit berpadu santan gurih melimpah.", price: 12000, img: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=200&auto=format&fit=crop&q=60" },
+    { id: "W02", category: "cemilan", name: "Burjo Ketan Hitam", desc: "Perpaduan pas burjo spesial dengan tambahan ketan hitam manis yang lembut.", price: 13000, img: "https://images.unsplash.com/photo-1600850056064-a8b380df8395?w=200&auto=format&fit=crop&q=60" },
+    { id: "W03", category: "makanan", name: "Indomie Goreng Original", desc: "Mie goreng favorit sejuta umat disajikan hangat dengan rasa gurih yang pas khas warkop.", price: 10000, img: "https://images.unsplash.com/photo-1612966608997-30d411b48217?w=200&auto=format&fit=crop&q=60" },
+    { id: "W04", category: "makanan", name: "Indomie Goreng Telur", desc: "Indomie goreng legendaris dilengkapi dengan tambahan telur ceplok/dadar spesial.", price: 14000, img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=200&auto=format&fit=crop&q=60" },
+    { id: "W05", category: "makanan", name: "Indomie Rebus Soto Telur", desc: "Mie kuah rasa soto hangat gurih disajikan dengan rebusan telur segar.", price: 14000, img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&auto=format&fit=crop&q=60" },
+    { id: "W06", category: "cemilan", name: "Roti Bakar Coklat Keju", desc: "Roti bakar renyah garing di luar, dengan taburan meses coklat tebal dan keju parut.", price: 15000, img: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=200&auto=format&fit=crop&q=60" },
+    { id: "W07", category: "cemilan", name: "Pisang Bakar Coklat Keju", desc: "Pisang manis dibakar karamel, diguyur susu kental manis, coklat, dan parutan keju gurih.", price: 15000, img: "https://images.unsplash.com/photo-1528825871115-3581a5387919?w=200&auto=format&fit=crop&q=60" },
+    { id: "W08", category: "minuman", name: "Es Kopi Susu Aren", desc: "Es kopi susu racikan warkop menggunakan robusta espresso murni dan gula aren premium.", price: 18000, img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&auto=format&fit=crop&q=60" },
+    { id: "W09", category: "minuman", name: "Es Kopi Hitam / Americano", desc: "Seduhan kopi hitam murni dingin tanpa ampas, sangat pas menyegarkan fokus hari Anda.", price: 15000, img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&auto=format&fit=crop&q=60" },
+    { id: "W10", category: "minuman", name: "Es Teh Manis", desc: "Es teh manis klasik seduhan daun teh pilihan, pelepas dahaga paling ampuh.", price: 6000, img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=200&auto=format&fit=crop&q=60" },
+    { id: "W11", category: "minuman", name: "Es Jeruk Peras", desc: "Perasan murni buah jeruk asli segar kaya vitamin, kombinasi manis asam dingin optimal.", price: 12000, img: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=200&auto=format&fit=crop&q=60" }
   ];
 
   const cart = {};
@@ -227,7 +238,7 @@
 
       targetSection.innerHTML += `
         <div class="item">
-          <div class="item-img-box">${item.emoji}</div>
+          <div class="item-img-box"><img src="${item.img}" alt="${item.name}"></div>
           <div class="item-info">
             <div class="item-name">${item.name}</div>
             <div class="item-desc">${item.desc}</div>
@@ -261,7 +272,7 @@
       if (qty > 0) {
         cartItemsEl.innerHTML += `
           <div class="item">
-            <div class="item-img-box">${item.emoji}</div>
+            <div class="item-img-box"><img src="${item.img}" alt="${item.name}"></div>
             <div class="item-info">
               <div class="item-name">${item.name}</div>
               <div class="item-price">Rp ${(item.price * qty).toLocaleString("id-ID")}</div>
@@ -296,63 +307,3 @@
     if (btn.dataset.action === "inc") { cart[id] = (cart[id] || 0) + 1; }
     if (btn.dataset.action === "dec") { cart[id] = Math.max(0, cart[id] - 1); }
     if (cart[id] === 0) delete cart[id];
-    renderMenu();
-    updateCartBar();
-    if (document.getElementById("cartModal").classList.contains("show")) renderCartModal();
-  });
-
-  document.getElementById("viewCartBtn").addEventListener("click", () => {
-    renderCartModal();
-    document.getElementById("cartModal").classList.add("show");
-  });
-  document.getElementById("closeCartBtn").addEventListener("click", () => {
-    document.getElementById("cartModal").classList.remove("show");
-  });
-
-  document.getElementById("confirmOrderBtn").addEventListener("click", async () => {
-    let total = 0;
-    const items = [];
-    for (const id in cart) {
-      if (cart[id] > 0) {
-        const m = MENU.find(x => x.id === id);
-        items.push({ name: m.name, qty: cart[id], price: m.price });
-        total += m.price * cart[id];
-      }
-    }
-    
-    const confirmOrderBtn = document.getElementById("confirmOrderBtn");
-    confirmOrderBtn.disabled = true;
-    confirmOrderBtn.innerText = "Mengirim...";
-    
-    try {
-      await db.ref("orders").push({
-        items: items,
-        total: total,
-        timestamp: firebase.database.ServerValue.TIMESTAMP
-      });
-      document.getElementById("cartModal").classList.remove("show");
-      document.getElementById("successScreen").classList.add("show");
-      document.getElementById("successTotal").innerText = `Total: Rp ${total.toLocaleString("id-ID")}`;
-      
-      // DISINI SUDAH DIUBAH MENJADI WARKOP BRMANO
-      document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=WarkopBrmano_Kasir_Bayar_${total}`;
-    } catch (err) {
-      alert("Gagal mengirim pesanan ke dapur!");
-      confirmOrderBtn.disabled = false;
-      confirmOrderBtn.innerText = "Kirim ke Dapur";
-    }
-  });
-
-  document.getElementById("newOrderBtn").addEventListener("click", () => {
-    for (const k in cart) delete cart[k];
-    renderMenu(); 
-    updateCartBar();
-    document.getElementById("successScreen").classList.remove("show");
-    document.getElementById("confirmOrderBtn").disabled = false;
-    document.getElementById("confirmOrderBtn").innerText = "Kirim ke Dapur";
-  });
-
-  renderMenu();
-</script>
-</body>
-</html>
