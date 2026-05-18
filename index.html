@@ -76,7 +76,7 @@
     box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2);
   }
 
-  /* Menu Layout (List View ala Gambar) */
+  /* Menu Layout */
   .menu-container { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
   .menu-category-section { display: none; flex-direction: column; gap: 12px; }
   .menu-category-section.active { display: flex; }
@@ -116,7 +116,6 @@
   /* Bottom Floating Cart Bar */
   .cart-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; padding: 16px; background: linear-gradient(to top, rgba(248,250,252,1) 80%, rgba(248,250,252,0)); display: flex; justify-content: center; z-index: 40; }
   .checkout-btn { width: 100%; padding: 16px; background: var(--accent); color: white; font-weight: 700; border-radius: 14px; border: none; font-size: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 24px rgba(249, 115, 22, 0.35); }
-  .checkout-btn span-count { background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px; font-size: 12px; }
   
   /* Order Overview Modal */
   .modal { display: none; position: fixed; inset: 0; background: #f8fafc; z-index: 50; flex-direction: column; }
@@ -186,7 +185,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
-  // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyCmmIeOR8RA-PeGZGVttAcdwHuPveuXVVM",
     authDomain: "order-sekarang.firebaseapp.com",
@@ -200,13 +198,12 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  // Terbagi Berdasarkan Kategori Lengkap Dengan Deskripsi & Gambar Emoji
   const MENU = [
     { id: "W01", category: "cemilan", name: "Bubur Kacang Hijau (Burjo)", desc: "Bubur kacang hijau manis legit berpadu santan gurih melimpah.", price: 12000, emoji: "🥣" },
-    { id: "W02", category: "cemilan", name: "Burjo Ketan Hitam", desc: "Perpaduan pas burjo spesial dengan tambahan ketan hitam yang lembut.", price: 13000, emoji: "🍨" },
+    { id: "W02", category: "cemilan", name: "Burjo Ketan Hitam", desc: "Perpaduan pas burjo spesial dengan tempat ketan hitam yang lembut.", price: 13000, emoji: "🍨" },
     { id: "W03", category: "makanan", name: "Indomie Goreng Original", desc: "Mie goreng favorit sejuta umat disajikan hangat dengan bumbu pas khas warkop.", price: 10000, emoji: "🍳" },
     { id: "W04", category: "makanan", name: "Indomie Goreng Telur", desc: "Indomie goreng legendaris dengan tambahan telur mata sapi/dadar di atasnya.", price: 14000, emoji: "🍝" },
-    { id: "W05", category: "makanan", name: "Indomie Rebus Soto Telur", desc: "Mie kuah rasa soto segar disajikan lengkap dengan telur rebus setengah matang/matang.", price: 14000, emoji: "🍜" },
+    { id: "W05", category: "makanan", name: "Indomie Rebus Soto Telur", desc: "Mie kuah rasa soto segar disajikan lengkap dengan telur rebus matang/setengah matang.", price: 14000, emoji: "🍜" },
     { id: "W06", category: "cemilan", name: "Roti Bakar Coklat Keju", desc: "Roti bakar renyah di luar, lembut di dalam dengan taburan coklat meses dan keju tebal.", price: 15000, emoji: "🍞" },
     { id: "W07", category: "cemilan", name: "Pisang Bakar Coklat Keju", desc: "Pisang pilihan yang dibakar manis garing dipadu susu kental manis, coklat, dan parutan keju.", price: 15000, emoji: "🍌" },
     { id: "W08", category: "minuman", name: "Es Kopi Susu Aren", desc: "Es kopi espresso racikan warkop dengan susu segar murni dan manisnya gula aren asli.", price: 18000, emoji: "☕" },
@@ -222,9 +219,7 @@
     const secMinuman = document.getElementById("sec-minuman");
     const secCemilan = document.getElementById("sec-cemilan");
 
-    secMakanan.innerHTML = "";
-    secMinuman.innerHTML = "";
-    secCemilan.innerHTML = "";
+    secMakanan.innerHTML = ""; secMinuman.innerHTML = ""; secCemilan.innerHTML = "";
 
     MENU.forEach(item => {
       const qty = cart[item.id] || 0;
@@ -338,6 +333,8 @@
       document.getElementById("cartModal").classList.remove("show");
       document.getElementById("successScreen").classList.add("show");
       document.getElementById("successTotal").innerText = `Total: Rp ${total.toLocaleString("id-ID")}`;
+      
+      // DISINI SUDAH DIUBAH MENJADI WARKOP BRMANO
       document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=WarkopBrmano_Kasir_Bayar_${total}`;
     } catch (err) {
       alert("Gagal mengirim pesanan ke dapur!");
