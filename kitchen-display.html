@@ -11,6 +11,7 @@
   
   .layout-container { display: flex; flex-direction: column; gap: 30px; }
   
+  /* Antrian Order Aktif */
   .order-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
   .order-card { background: #1e293b; border-radius: 12px; padding: 20px; border-left: 6px solid #f97316; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
   .order-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 12px; margin-bottom: 15px; }
@@ -21,14 +22,13 @@
   .item-list li { font-size: 18px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; }
   .qty { font-weight: bold; color: #121212; background: #f97316; padding: 2px 8px; border-radius: 6px; font-size: 16px; }
   .item-name { flex: 1; line-height: 1.3;}
-  
   .complete-btn { width: 100%; padding: 14px; background: #22c55e; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
   
-  /* Panel Summary Hari Ini */
-  .summary-card { background: #1e293b; border-radius: 14px; padding: 24px; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
-  .summary-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 2px solid #334155; padding-bottom: 12px;}
-  .summary-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-  .summary-table th, .summary-table td { text-align: left; padding: 12px; border-bottom: 1px solid #334155; }
+  /* Panel Rekap Per Order */
+  .summary-card { background: #1e293b; border-radius: 14px; padding: 24px; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.4); overflow-x: auto;}
+  .summary-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 2px solid #334155; padding-bottom: 12px; flex-wrap: wrap; gap: 10px;}
+  .summary-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; min-width: 600px;}
+  .summary-table th, .summary-table td { text-align: left; padding: 12px; border-bottom: 1px solid #334155; font-size: 14px;}
   .summary-table th { color: #f97316; font-weight: 600; }
   .export-btn { background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; }
   .export-btn:hover { background: #2563eb; }
@@ -41,7 +41,7 @@
 <header>
   <div>
     <h1>Kitchen Display System</h1>
-    <div style="color: #cbd5e1; font-size: 14px; margin-top: 4px;">Live Orders & Rekap - Warkop Brmano</div>
+    <div style="color: #cbd5e1; font-size: 14px; margin-top: 4px;">Live Orders & Rekap Harian - Warkop Brmano</div>
   </div>
 </header>
 
@@ -55,20 +55,21 @@
 
   <div class="summary-card">
     <div class="summary-header">
-      <h2 style="font-size: 18px; margin: 0; color: #4ade80;">📈 Ringkasan Penjualan Hari Ini</h2>
-      <button class="export-btn" onclick="exportToExcel()">📊 Export ke Excel (.csv)</button>
+      <h2 style="font-size: 18px; margin: 0; color: #4ade80;">📈 Rekap Pesanan Hari Ini</h2>
+      <button class="export-btn" onclick="exportToExcel()">📊 Export Data ke Excel</button>
     </div>
     <table class="summary-table">
       <thead>
         <tr>
-          <th>Nama Menu</th>
-          <th>Total Porsi Terjual</th>
-          <th>Subtotal Pendapatan</th>
+          <th style="width: 50px;">No.</th>
+          <th style="width: 100px;">Waktu</th>
+          <th>Rincian Pesanan</th>
+          <th style="width: 150px;">Total Harga</th>
         </tr>
       </thead>
       <tbody id="summaryBody">
         <tr>
-          <td colspan="3" class="empty-state">Belum ada pesanan yang diselesaikan hari ini.</td>
+          <td colspan="4" class="empty-state">Belum ada pesanan yang diselesaikan hari ini.</td>
         </tr>
       </tbody>
     </table>
@@ -99,7 +100,8 @@
 
   // Dapatkan String Tanggal Hari Ini (WIB/Lokal) format YYYY-MM-DD
   const todayStr = new Date().toISOString().split('T')[0];
-  let dailySummaryData = {}; 
+  
+  let completedOrdersList = []; 
   let currentGrandTotal = 0;
 
   // 1. DENGARKAN ORDER MASUK (AKTIF)
@@ -121,7 +123,6 @@
         });
       }
 
-      // Tampilkan Tanggal dan Jam Masuk Pesanan Sesuai Permintaan
       let dateTimeString = "Baru saja";
       if (order.timestamp) {
         const oDate = new Date(order.timestamp);
@@ -137,21 +138,20 @@
             <span class="total-price">${totalPrice}</span>
           </div>
           <ul class="item-list">${itemsHTML}</ul>
-          <button class="complete-btn" onclick="completeOrder('${key}')">Selesai & Rekap</button>
+          <button class="complete-btn" onclick="completeOrder('${key}')">Selesai & Masukkan ke Rekap</button>
         </div>
       `;
     });
   });
 
-  // 2. FUNGSI KLIK SELESAI (Pindahkan order aktif ke riwayat hari ini)
+  // 2. FUNGSI KLIK SELESAI
   window.completeOrder = function(key) {
-    if(confirm("Selesaikan pesanan ini? Selesai akan otomatis merekap total harian.")) {
+    if(confirm("Pesanan ini sudah selesai? Order akan masuk ke rekap hari ini.")) {
       db.ref("orders/" + key).once("value", (snapshot) => {
         if(snapshot.exists()) {
           const orderData = snapshot.val();
-          // Simpan ke folder riwayat hari ini agar aman & ringan
+          // Simpan ke folder riwayat hari ini
           db.ref("completed_orders/" + todayStr + "/" + key).set(orderData, () => {
-            // Hapus dari folder antrean aktif dapur
             db.ref("orders/" + key).remove();
           });
         }
@@ -159,70 +159,89 @@
     }
   };
 
-  // 3. DENGARKAN REKAP HARIAN HARI INI SAJA (Sangat Ringan)
+  // 3. DENGARKAN REKAP HARIAN (PISAH PER ORDER)
   db.ref("completed_orders/" + todayStr).on("value", (snapshot) => {
     summaryBody.innerHTML = "";
-    dailySummaryData = {};
+    completedOrdersList = [];
     currentGrandTotal = 0;
+    let orderNumber = 1;
 
     if (!snapshot.exists()) {
-      summaryBody.innerHTML = '<tr><td colspan="3" class="empty-state">Belum ada pesanan selesai hari ini.</td></tr>';
+      summaryBody.innerHTML = '<tr><td colspan="4" class="empty-state">Belum ada pesanan selesai hari ini.</td></tr>';
       grandTotalText.innerText = "Total Omset Hari Ini: Rp 0";
       return;
     }
 
     snapshot.forEach((childSnapshot) => {
       const order = childSnapshot.val();
+      
+      // Gabungkan rincian item menjadi 1 teks panjang (Contoh: "2x Kopi, 1x Indomie")
+      let detailItems = [];
       if (order.items) {
         order.items.forEach(item => {
-          if (!dailySummaryData[item.name]) {
-            dailySummaryData[item.name] = { qty: 0, revenue: 0 };
-          }
-          dailySummaryData[item.name].qty += item.qty;
-          dailySummaryData[item.name].revenue += (item.qty * item.price);
+          detailItems.push(`${item.qty}x ${item.name}`);
         });
       }
-      if(order.total) { currentGrandTotal += order.total; }
-    });
+      let detailString = detailItems.join(", ");
+      
+      // Dapatkan Waktu Pesanan Selesai / Masuk
+      let timeString = "-";
+      if (order.timestamp) {
+        const oDate = new Date(order.timestamp);
+        timeString = oDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      }
+      
+      let totalHarga = order.total || 0;
+      currentGrandTotal += totalHarga;
 
-    // Render ke Tabel Ringkasan
-    for (const menuName in dailySummaryData) {
+      // Simpan data untuk Export Excel nanti
+      completedOrdersList.push({
+        no: orderNumber,
+        waktu: timeString,
+        rincian: detailString,
+        total: totalHarga
+      });
+
+      // Render Baris ke Tabel
       summaryBody.innerHTML += `
         <tr>
-          <td><strong>${menuName}</strong></td>
-          <td>${dailySummaryData[menuName].qty} Porsi</td>
-          <td>Rp ${dailySummaryData[menuName].revenue.toLocaleString("id-ID")}</td>
+          <td><strong>#${orderNumber}</strong></td>
+          <td>${timeString}</td>
+          <td>${detailString}</td>
+          <td style="color: #4ade80; font-weight: bold;">Rp ${totalHarga.toLocaleString("id-ID")}</td>
         </tr>
       `;
-    }
+      orderNumber++;
+    });
+
     grandTotalText.innerText = `Total Omset Hari Ini: Rp ${currentGrandTotal.toLocaleString("id-ID")}`;
   });
 
   // 4. FUNGSI EXPORT DATA KE EXCEL (CSV FORMAT)
   window.exportToExcel = function() {
-    if (Object.keys(dailySummaryData).length === 0) {
-      alert("Tidak ada data penjualan hari ini untuk di-export!");
+    if (completedOrdersList.length === 0) {
+      alert("Tidak ada data pesanan hari ini untuk di-export!");
       return;
     }
 
-    // Buat header kolom tabel
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "REKAP PENJUALAN WARKOP BRMANO\n";
+    csvContent += "REKAP PESANAN WARKOP BRMANO\n";
     csvContent += `Tanggal: ${todayStr}\n\n`;
-    csvContent += "Nama Menu,Total Porsi Terjual,Subtotal Pendapatan\n";
+    csvContent += "No. Order,Waktu,Rincian Pesanan,Total Harga\n";
 
-    // Masukkan data baris menu
-    for (const menuName in dailySummaryData) {
-      csvContent += `"${menuName}",${dailySummaryData[menuName].qty},${dailySummaryData[menuName].revenue}\n`;
-    }
+    // Masukkan data per order
+    completedOrdersList.forEach(order => {
+      // Bungkus rincian pesanan dengan tanda kutip ganda agar koma di dalam teks tidak merusak kolom CSV
+      let amanRincian = `"${order.rincian}"`; 
+      csvContent += `${order.no},${order.waktu},${amanRincian},${order.total}\n`;
+    });
     
-    csvContent += `\n,,Total Omset Harian,${currentGrandTotal}\n`;
+    csvContent += `\n,,,TOTAL OMSET HARIAN,${currentGrandTotal}\n`;
 
-    // Trigger Download otomatis di browser
     const encodedUri = encodeURI(csvContent);
     const downloadAnchor = document.createElement("a");
     downloadAnchor.setAttribute("href", encodedUri);
-    downloadAnchor.setAttribute("download", `Rekap_WarkopBrmano_${todayStr}.csv`);
+    downloadAnchor.setAttribute("download", `Data_Order_WarkopBrmano_${todayStr}.csv`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     document.body.removeChild(downloadAnchor);
