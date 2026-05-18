@@ -27,105 +27,36 @@
     padding-bottom: 120px;
   }
   
-  /* Header & Logo */
-  header { 
-    padding: 24px 20px 16px; 
-    text-align: center; 
-    background: var(--card);
-    border-bottom: 1px solid var(--border); 
-  }
-  .logo-container {
-    width: 90px;
-    height: 90px;
-    margin: 0 auto 12px;
-    border-radius: 50%;
-    border: 3px solid var(--accent);
-    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25);
-    overflow: hidden;
-    background: #f1f5f9;
-  }
-  .logo-img { 
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  header { padding: 24px 20px 16px; text-align: center; background: var(--card); border-bottom: 1px solid var(--border); }
+  .logo-container { width: 90px; height: 90px; margin: 0 auto 12px; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25); overflow: hidden; background: #f1f5f9; }
+  .logo-img { width: 100%; height: 100%; object-fit: cover; }
   header h1 { font-size: 22px; font-weight: 700; color: var(--text); }
   header p { font-size: 13px; color: var(--muted); margin-top: 2px; }
 
-  /* Category Tabs Navigation */
-  .categories-tabs {
-    display: flex;
-    background: var(--card);
-    padding: 4px;
-    margin: 16px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .tab-btn {
-    flex: 1;
-    padding: 10px 4px;
-    border: none;
-    background: transparent;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--muted);
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-  }
-  .tab-btn.active {
-    background: var(--accent);
-    color: white;
-    box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2);
-  }
+  .categories-tabs { display: flex; background: var(--card); padding: 4px; margin: 16px; border-radius: 12px; border: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+  .tab-btn { flex: 1; padding: 10px 4px; border: none; background: transparent; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; border-radius: 8px; transition: all 0.2s ease; }
+  .tab-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2); }
 
-  /* Menu Layout */
   .menu-container { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
   .menu-category-section { display: none; flex-direction: column; gap: 12px; }
   .menu-category-section.active { display: flex; }
 
-  .item { 
-    background: var(--card); 
-    border-radius: 14px; 
-    padding: 12px; 
-    display: flex; 
-    align-items: center; 
-    gap: 14px;
-    border: 1px solid var(--border); 
-    box-shadow: var(--shadow);
-  }
-  .item-img-box {
-    width: 80px;
-    height: 80px;
-    border-radius: 10px;
-    overflow: hidden;
-    flex-shrink: 0;
-    background: #f1f5f9;
-  }
-  .item-img-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  .item { background: var(--card); border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+  .item-img-box { width: 80px; height: 80px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #f1f5f9; }
+  .item-img-box img { width: 100%; height: 100%; object-fit: cover; }
   .item-info { flex: 1; min-width: 0; }
   .item-name { font-weight: 600; font-size: 15px; color: #0f172a; margin-bottom: 2px; }
   .item-desc { font-size: 12px; color: var(--muted); line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .item-price { font-weight: 700; color: var(--accent-dark); font-size: 14px; }
   
-  /* Quantity Controls */
   .qty-controls { display: flex; align-items: center; background: var(--accent-soft); padding: 4px; border-radius: 8px; gap: 8px; }
   .qty-btn { width: 28px; height: 28px; border-radius: 6px; border: none; background: white; color: var(--accent-dark); font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
   .qty-btn.add { background: var(--accent); color: white; width: auto; padding: 0 12px; height: 32px; border-radius: 8px; font-size: 14px; box-shadow: 0 2px 6px rgba(249, 115, 22, 0.2); }
   .qty-num { font-weight: 700; min-width: 16px; text-align: center; font-size: 14px; color: var(--accent-dark); }
 
-  /* Bottom Floating Cart Bar */
   .cart-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; padding: 16px; background: linear-gradient(to top, rgba(248,250,252,1) 80%, rgba(248,250,252,0)); display: flex; justify-content: center; z-index: 40; }
   .checkout-btn { width: 100%; padding: 16px; background: var(--accent); color: white; font-weight: 700; border-radius: 14px; border: none; font-size: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 24px rgba(249, 115, 22, 0.35); }
   
-  /* Order Overview Modal */
   .modal { display: none; position: fixed; inset: 0; background: #f8fafc; z-index: 50; flex-direction: column; }
   .modal.show { display: flex; }
   .modal-header { padding: 20px; background: white; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
@@ -133,19 +64,28 @@
   .modal-content { padding: 16px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 12px; }
   .confirm-btn { background: var(--success); color: white; width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; margin-top: auto; cursor: pointer; box-shadow: 0 6px 18px rgba(34, 197, 94, 0.3); }
   
-  /* Success Screen */
-  .success-screen { display: none; position: fixed; inset: 0; background: white; z-index: 100; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;}
+  .success-screen { display: none; position: fixed; inset: 0; background: #f8fafc; z-index: 100; flex-direction: column; overflow-y: auto; padding-bottom: 40px;}
   .success-screen.show { display: flex; }
-  .success-icon { width: 64px; height: 64px; background: #dcfce7; color: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 16px; }
-  .qr-img { width: 220px; height: 220px; margin: 24px 0; border-radius: 16px; border: 1px solid var(--border); padding: 10px; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
-  .new-order-btn { margin-top: 24px; padding: 12px 28px; border: 2px solid var(--accent); background: white; color: var(--accent); border-radius: 12px; font-weight: bold; font-size: 15px; cursor: pointer; }
+  .payment-header { background: white; padding: 30px 20px 20px; text-align: center; border-bottom: 1px solid var(--border); }
+  .success-icon { width: 56px; height: 56px; background: #dcfce7; color: var(--success); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 12px; }
+  
+  .payment-card { background: white; margin: 16px; border-radius: 16px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03); text-align: center;}
+  .payment-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+  .pay-tab-btn { flex: 1; padding: 12px; border: 1px solid var(--border); background: white; border-radius: 10px; font-weight: 600; color: var(--muted); cursor: pointer; }
+  .pay-tab-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-dark); }
+  
+  .qris-img { width: 100%; max-width: 240px; border-radius: 12px; margin: 10px auto; border: 2px solid var(--border); display: block;}
+  .payment-logos { display: flex; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .payment-logos span { background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; color: #475569; border: 1px solid #e2e8f0;}
+  
+  .new-order-btn { margin: 20px 16px; padding: 16px; border: 2px solid var(--accent); background: white; color: var(--accent-dark); border-radius: 14px; font-weight: bold; font-size: 16px; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo-container">
-    <img src="warkop brmano logo.png" alt="Warkop Brmano Logo" class="logo-img">
+    <img src="warkop brmano logo.png" alt="Warkop Brmano Logo" class="logo-img" onerror="this.src='https://placehold.co/90x90/f97316/white?text=WB'">
   </div>
   <h1>Warkop Brmano</h1>
   <p>Pesan langsung dari meja Anda • Fresh & Cepat</p>
@@ -166,7 +106,7 @@
 <div class="cart-bar" id="cartBar" style="display: none;">
   <button class="checkout-btn" id="viewCartBtn">
     <span id="cartCount" style="background: rgba(255,255,255,0.25); padding: 4px 8px; border-radius: 6px; font-size: 13px;">0 item</span>
-    <span>Lihat Pesanan</span>
+    <span>Order Sekarang</span>
     <span id="cartTotal">Rp 0</span>
   </button>
 </div>
@@ -178,17 +118,49 @@
   </div>
   <div class="modal-content">
     <div id="cartItems" style="display: flex; flex-direction: column; gap: 12px;"></div>
-    <button class="confirm-btn" id="confirmOrderBtn">Kirim ke Dapur</button>
+    <button class="confirm-btn" id="confirmOrderBtn">Bayar Sekarang</button>
   </div>
 </div>
 
 <div class="success-screen" id="successScreen">
-  <div class="success-icon">✓</div>
-  <h2 style="font-size: 24px; font-weight: 700; color: #0f172a;">Pesanan Dikirim!</h2>
-  <p style="color: var(--muted); font-size: 14px; margin-top: 6px; max-width: 280px;">Silahkan lakukan pembayaran di kasir dengan scan QR Code berikut:</p>
-  <img id="qrImg" class="qr-img" alt="Payment QR Code" />
-  <h3 id="successTotal" style="font-size: 22px; color: var(--accent-dark); font-weight: 700;">Rp 0</h3>
-  <button class="new-order-btn" id="newOrderBtn">Buat Pesanan Baru</button>
+  <div class="payment-header">
+    <div class="success-icon">✓</div>
+    <h2 style="font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Pesanan Diterima Dapur!</h2>
+    <p style="color: var(--muted); font-size: 14px;">Total Tagihan Anda:</p>
+    <h3 id="successTotal" style="font-size: 28px; color: var(--accent-dark); font-weight: 700; margin-top: 4px;">Rp 0</h3>
+  </div>
+
+  <div class="payment-card">
+    <h4 style="margin-bottom: 16px; color: #334155;">Pilih Metode Pembayaran</h4>
+    
+    <div class="payment-tabs">
+      <button class="pay-tab-btn active" id="btnQris" onclick="switchPayment('qris')">QRIS / E-Wallet</button>
+      <button class="pay-tab-btn" id="btnCash" onclick="switchPayment('cash')">Bayar di Kasir</button>
+    </div>
+
+    <div id="qrisSection">
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Scan QR code di bawah menggunakan aplikasi E-Wallet atau M-Banking Anda, dan <b>masukkan nominal tagihan.</b></p>
+      
+      <img src="qris.jpg" alt="QRIS Warkop Brmano" class="qris-img" onerror="this.src='https://placehold.co/240x240/e2e8f0/64748b?text=Upload+qris.jpg+di+GitHub'">
+      
+      <div class="payment-logos">
+        <span>Gopay</span>
+        <span>OVO</span>
+        <span>DANA</span>
+        <span>ShopeePay</span>
+        <span>M-BCA</span>
+      </div>
+      <p style="font-size: 12px; color: var(--success); font-weight: 600; margin-top: 16px;">Tunjukkan bukti transfer ke Kasir / Pelayan.</p>
+    </div>
+
+    <div id="cashSection" style="display: none; padding: 20px 0;">
+      <div style="font-size: 40px; margin-bottom: 10px;">💵</div>
+      <p style="color: #0f172a; font-weight: 600;">Pembayaran Tunai</p>
+      <p style="font-size: 13px; color: var(--muted); margin-top: 8px;">Silahkan hampiri kasir dan sebutkan pesanan Anda untuk melakukan pembayaran secara tunai.</p>
+    </div>
+  </div>
+
+  <button class="new-order-btn" id="newOrderBtn">Tutup & Buat Pesanan Baru</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -244,10 +216,7 @@
             <div class="item-price">Rp ${item.price.toLocaleString("id-ID")}</div>
           </div>
           <div class="qty-controls" data-id="${item.id}">
-            ${qty > 0 ? `
-              <button class="qty-btn" data-action="dec">−</button>
-              <span class="qty-num">${qty}</span>
-            ` : ""}
+            ${qty > 0 ? `<button class="qty-btn" data-action="dec">−</button><span class="qty-num">${qty}</span>` : ""}
             <button class="qty-btn ${qty === 0 ? 'add' : ''}" data-action="inc">${qty === 0 ? 'Tambah' : '+'}</button>
           </div>
         </div>
@@ -319,6 +288,21 @@
     document.getElementById("cartModal").classList.remove("show");
   });
 
+  function switchPayment(type) {
+    document.getElementById("btnQris").classList.remove("active");
+    document.getElementById("btnCash").classList.remove("active");
+    document.getElementById("qrisSection").style.display = "none";
+    document.getElementById("cashSection").style.display = "none";
+
+    if(type === 'qris') {
+      document.getElementById("btnQris").classList.add("active");
+      document.getElementById("qrisSection").style.display = "block";
+    } else {
+      document.getElementById("btnCash").classList.add("active");
+      document.getElementById("cashSection").style.display = "block";
+    }
+  }
+
   document.getElementById("confirmOrderBtn").addEventListener("click", async () => {
     let total = 0;
     const items = [];
@@ -332,7 +316,7 @@
     
     const confirmOrderBtn = document.getElementById("confirmOrderBtn");
     confirmOrderBtn.disabled = true;
-    confirmOrderBtn.innerText = "Mengirim...";
+    confirmOrderBtn.innerText = "Memproses...";
     
     try {
       await db.ref("orders").push({
@@ -342,12 +326,12 @@
       });
       document.getElementById("cartModal").classList.remove("show");
       document.getElementById("successScreen").classList.add("show");
-      document.getElementById("successTotal").innerText = `Total: Rp ${total.toLocaleString("id-ID")}`;
-      document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=WarkopBrmano_Kasir_Bayar_${total}`;
+      document.getElementById("successTotal").innerText = `Rp ${total.toLocaleString("id-ID")}`;
+      
     } catch (err) {
-      alert("Gagal mengirim pesanan!");
+      alert("Gagal memproses pesanan!");
       confirmOrderBtn.disabled = false;
-      confirmOrderBtn.innerText = "Kirim ke Dapur";
+      confirmOrderBtn.innerText = "Bayar Sekarang";
     }
   });
 
@@ -357,7 +341,8 @@
     updateCartBar();
     document.getElementById("successScreen").classList.remove("show");
     document.getElementById("confirmOrderBtn").disabled = false;
-    document.getElementById("confirmOrderBtn").innerText = "Kirim ke Dapur";
+    document.getElementById("confirmOrderBtn").innerText = "Bayar Sekarang";
+    switchPayment('qris'); 
   });
 
   renderMenu();
